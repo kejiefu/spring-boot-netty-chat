@@ -1,2 +1,2 @@
 # spring-boot-netty-chat
-分布式高可用netty聊天系统
+分布式高可用基于netty开发的聊天系统
