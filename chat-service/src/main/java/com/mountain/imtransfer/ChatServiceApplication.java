@@ -1,4 +1,4 @@
-package com.mountain.chatservice;
+package com.mountain.imtransfer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.mountain.chatservice;
+package com.mountain.imtransfer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Date 2020/9/19 11:18
  */
 @SpringBootApplication
-public class ImConnectorApplication {
+public class ImTransferApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(ImConnectorApplication.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImTransferApplication.class);
 
     public static void main(String[] args) {
         logger.info("~~~~~~~~~~~~~~~~ program start~~~~~~~~~~~~~~~~!");
-        SpringApplication.run(ImConnectorApplication.class, args);
+        SpringApplication.run(ImTransferApplication.class, args);
         logger.info("~~~~~~~~~~~~~~~~ program execute successfully~~~~~~~~~~~~~~~~!");
     }
 

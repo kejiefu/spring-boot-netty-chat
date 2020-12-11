@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ImGatewayApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(java.com.mountain.imgateway.ImGatewayApplication.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImGatewayApplication.class);
 
     public static void main(String[] args) {
         logger.info("~~~~~~~~~~~~~~~~ program start~~~~~~~~~~~~~~~~!");
