@@ -1,4 +1,4 @@
-package com.mountain.imconnector.handler;
+package com.mountain.imconnector.handler.client;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
@@ -10,7 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
-    protected void initChannel(SocketChannel socketChannel) throws Exception {
+    protected void initChannel(SocketChannel socketChannel) {
         socketChannel.pipeline().addLast("socketChoose", new SocketChooseHandler());
     }
 }
