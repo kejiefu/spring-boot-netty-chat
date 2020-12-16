@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2020/12/12 15:00
  * @Created by kejiefu
  */
-public class SocketChooseHandler extends ByteToMessageDecoder {
+public class ClientChooseHandler extends ByteToMessageDecoder {
 
     /**
      * WebSocket握手的协议前缀
@@ -47,7 +47,7 @@ public class SocketChooseHandler extends ByteToMessageDecoder {
 
             ctx.pipeline().addLast("ProtocolHandler", new WebSocketServerProtocolHandler("/ws", null, true, 65535));
 
-            ctx.pipeline().addLast("socketHandler", null);
+            ctx.pipeline().addLast("socketHandler", new ClientServerHandler());
         } else {
             //  常规TCP连接时，执行以下处理
 
@@ -61,7 +61,7 @@ public class SocketChooseHandler extends ByteToMessageDecoder {
             ctx.pipeline().addLast("frameEncoder", new LengthFieldPrepender(4, false));
             ctx.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
             ctx.pipeline().addLast("readTimeOut", new ReadTimeoutHandler(1200, TimeUnit.SECONDS));
-            ctx.pipeline().addLast("handler", null);
+            ctx.pipeline().addLast("handler", new ClientServerHandler());
         }
         in.resetReaderIndex();
         ctx.pipeline().remove(this.getClass());

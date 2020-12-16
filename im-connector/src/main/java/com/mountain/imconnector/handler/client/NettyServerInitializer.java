@@ -11,6 +11,6 @@ public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel socketChannel) {
-        socketChannel.pipeline().addLast("socketChoose", new SocketChooseHandler());
+        socketChannel.pipeline().addLast("socketChoose", new ClientChooseHandler());
     }
 }
