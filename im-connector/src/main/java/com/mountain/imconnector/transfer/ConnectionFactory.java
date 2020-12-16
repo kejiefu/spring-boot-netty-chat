@@ -24,10 +24,11 @@ public class ConnectionFactory {
     }
 
     /**
-     * im-transfer与im-server的映射
+     * im-connector与im-transfer的映射
      * 断线重连时需要重新关联
+     * host:port-->NetChannelObj
      */
-    private final Map<String, NetChannelObj> channelsMap = new ConcurrentHashMap<>();//host:port-->NetChannelObj
+    private final Map<String, NetChannelObj> channelsMap = new ConcurrentHashMap<>();
 
     public NetChannelObj newChannel(int port, String host) throws InterruptedException {
 

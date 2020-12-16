@@ -1,5 +1,6 @@
 package com.mountain.imconnector.transfer;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mountain.imconnector.transfer.actor.IConnectionActor;
 import com.mountain.imconnector.transfer.actor.impl.ConnectionActor;
 import com.mountain.imconnector.transfer.constant.ConnectionConstant;
@@ -8,9 +9,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Data
 @Slf4j
@@ -28,19 +27,22 @@ public class NetChannelObj {
     private IConnectionActor actor;
 
     /**
-     * 默认最大并发数:cpu 核心 x 2<br>
-     */
-    private static final int CORE_POOL_SIZE = 1;
-
-    /**
      * 是否无效了
      */
     private boolean isDead = false;
 
     /**
+     * 默认最大并发数:cpu 核心 x 2<br>
+     */
+    private static final int CORE_POOL_SIZE = 1;
+
+    private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+            .setNameFormat("ConnectorClientServer-pool-%d").build();
+
+    /**
      * 定时任务线程
      */
-    private final ScheduledExecutorService schedule = new ScheduledThreadPoolExecutor(CORE_POOL_SIZE);
+    private final ScheduledExecutorService schedule = new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
     /**
      * 网络对象
@@ -54,7 +56,7 @@ public class NetChannelObj {
         this.actor = new ConnectionActor(port, host);
         this.channel = this.actor.connectionToServer();
         if (this.channel != null) {
-            //每隔30分钟【1800秒】发送一次心跳数据
+            //每隔30分钟发送一次心跳数据
             this.schedule.scheduleWithFixedDelay(() -> {
 
             }, 1, 1800, TimeUnit.SECONDS);
