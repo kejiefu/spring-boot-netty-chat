@@ -1,5 +1,7 @@
 package com.mountain.imtransfer.server;
 
+import com.alibaba.nacos.api.naming.NamingFactory;
+import com.alibaba.nacos.api.naming.NamingService;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mountain.imtransfer.handler.TransferHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -14,6 +16,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
 import java.util.concurrent.*;
 
 /**
@@ -30,7 +33,13 @@ public class TransferServer implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(TransferServer.class);
 
     @Value("${transfer.port}")
-    private Integer port;
+    private Integer transferPort;
+
+    @Value("${transfer.name}")
+    private String transferServer;
+
+    @Value("${spring.cloud.nacos.discovery.server-addr}")
+    private String serverAddress;
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("ConnectorClientServer-pool-%d").build();
@@ -38,7 +47,6 @@ public class TransferServer implements ApplicationRunner {
     private static ExecutorService executorService = new ThreadPoolExecutor(1, 1,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(1), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
-
 
     /**
      * 通过group方法关联了两个线程组，NioEventLoopGroup是用来处理I/O操作的线程池，
@@ -77,11 +85,13 @@ public class TransferServer implements ApplicationRunner {
                 //有数据立即发送
                 serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
                 // 链接服务器
-                ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+                ChannelFuture channelFuture = serverBootstrap.bind(transferPort).sync();
 
                 Channel channel = channelFuture.channel();
-                logger.info("TransferServer 已经启动,端口:" + port + ".");
+                logger.info("TransferServer 已经启动,端口:" + transferPort + ".");
 
+                //netty服务注入到nacos
+                registerService();
 
                 //等待服务监听端口关闭,就是由于这里会将线程阻塞，导致无法发送信息，所以我这里开了线程
                 channel.closeFuture().sync();
@@ -93,5 +103,20 @@ public class TransferServer implements ApplicationRunner {
             }
         });
     }
+
+    /**
+     * 注册netty的信息到nacos
+     * @throws Exception
+     */
+    private void registerService() throws Exception {
+        //获取nacos服务
+        NamingService namingService = NamingFactory.createNamingService(serverAddress);
+        InetAddress address = InetAddress.getLocalHost();
+        //服务地址的ip
+        String ip = address.getHostAddress();
+        //注册
+        namingService.registerInstance(transferServer, ip, transferPort);
+    }
+
 
 }
