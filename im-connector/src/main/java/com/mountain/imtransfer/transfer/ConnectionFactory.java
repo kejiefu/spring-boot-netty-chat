@@ -1,7 +1,7 @@
-package com.mountain.imconnector.transfer;
+package com.mountain.imtransfer.transfer;
 
 
-import com.mountain.imconnector.transfer.constant.ConnectionConstant;
+import com.mountain.imtransfer.transfer.constant.ConnectionConstant;
 import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 

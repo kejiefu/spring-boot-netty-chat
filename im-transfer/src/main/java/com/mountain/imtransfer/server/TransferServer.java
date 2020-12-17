@@ -1,13 +1,11 @@
-package com.mountain.imconnector.server;
+package com.mountain.imtransfer.server;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.imconnector.handler.client.NettyServerInitializer;
+import com.mountain.imtransfer.handler.TransferHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,18 +17,19 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.*;
 
 /**
- * 连接客户端的server
+ * TransferServer
+ *
  * @author kejiefu
  * @Description TODO
  * @Date 2020/12/12 14:53
  * @Created by kejiefu
  */
 @Component
-public class ClientServer implements ApplicationRunner {
+public class TransferServer implements ApplicationRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransferServer.class);
 
-    @Value("${connector.socket.port}")
+    @Value("${transfer.port}")
     private Integer port;
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
@@ -63,8 +62,14 @@ public class ClientServer implements ApplicationRunner {
             try {
                 ServerBootstrap serverBootstrap = new ServerBootstrap();
                 serverBootstrap.group(bossGroup, workerGroup)
-                        .channel(NioServerSocketChannel.class).
-                        childHandler(new NettyServerInitializer());
+                        .channel(NioServerSocketChannel.class)
+                        .childHandler(new ChannelInitializer<SocketChannel>() {
+                            @Override
+                            protected void initChannel(SocketChannel channel) throws Exception {
+                                ChannelPipeline pipeline = channel.pipeline();
+                                pipeline.addLast("handler", new TransferHandler());
+                            }
+                        });
                 //保持连接数
                 serverBootstrap.option(ChannelOption.SO_BACKLOG, 300);
                 //保持连接
@@ -75,11 +80,13 @@ public class ClientServer implements ApplicationRunner {
                 ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
 
                 Channel channel = channelFuture.channel();
-                logger.info("ConnectorClientServer 已经启动,端口:" + port + ".");
+                logger.info("TransferServer 已经启动,端口:" + port + ".");
+
+
                 //等待服务监听端口关闭,就是由于这里会将线程阻塞，导致无法发送信息，所以我这里开了线程
                 channel.closeFuture().sync();
             } catch (Exception ex) {
-                logger.error("ConnectorClientServer.run:", ex);
+                logger.error("TransferServer.run:", ex);
             } finally {
                 bossGroup.shutdownGracefully();
                 workerGroup.shutdownGracefully();

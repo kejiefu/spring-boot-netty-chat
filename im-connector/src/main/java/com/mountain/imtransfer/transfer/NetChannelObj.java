@@ -1,9 +1,9 @@
-package com.mountain.imconnector.transfer;
+package com.mountain.imtransfer.transfer;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.imconnector.transfer.actor.IConnectionActor;
-import com.mountain.imconnector.transfer.actor.impl.ConnectionActor;
-import com.mountain.imconnector.transfer.constant.ConnectionConstant;
+import com.mountain.imtransfer.transfer.actor.IConnectionActor;
+import com.mountain.imtransfer.transfer.actor.impl.ConnectionActor;
+import com.mountain.imtransfer.transfer.constant.ConnectionConstant;
 import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

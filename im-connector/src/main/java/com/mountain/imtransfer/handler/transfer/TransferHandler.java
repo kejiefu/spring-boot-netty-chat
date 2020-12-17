@@ -1,4 +1,4 @@
-package com.mountain.imconnector.handler.transfer;
+package com.mountain.imtransfer.handler.transfer;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -10,13 +10,13 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
 
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+    public void handlerRemoved(ChannelHandlerContext ctx) {
 
 
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
 
     }
 
