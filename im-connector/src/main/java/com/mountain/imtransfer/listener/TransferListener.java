@@ -2,6 +2,7 @@ package com.mountain.imtransfer.listener;
 
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.mountain.imtransfer.factory.TransferFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -32,20 +33,28 @@ public class TransferListener {
      * 初始化的时候绑定transfer的服务器
      */
     @PostConstruct
-    private void initialize() {
+    public void initialize() {
+        log.info("TransferListener.initialize...");
         try {
             //获取nacos服务
             NamingService namingService = NamingFactory.createNamingService(serverAddress);
             //服务列表
             List<Instance> instanceList = namingService.selectInstances(transferName, true);
+            log.info("instanceList:{}", instanceList);
             if (!CollectionUtils.isEmpty(instanceList)) {
                 for (Instance instance : instanceList) {
                     //初始化transfer的渠道
                     TransferFactory.getInstance().newChannel(instance.getIp(), instance.getPort());
                 }
             }
+            //监听服务下的实例列表变化
+            namingService.subscribe(transferName, event -> {
+                if (event instanceof NamingEvent) {
+                    log.info("监听服务下的实例列表变化，{}，{}", ((NamingEvent) event).getServiceName(), ((NamingEvent) event).getInstances());
+                }
+            });
         } catch (Exception ex) {
-            log.error("selectInstances:", ex);
+            log.error("TransferListener.initialize:", ex);
         }
     }
 

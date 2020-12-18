@@ -46,7 +46,7 @@ public class TransferActor implements ITransferActor {
                 ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
                 //构造函数传递要解码成的类型
                 //可以通过：protobuf方式进行解码和编码，以提高网络消息的传输效率。
-                ch.pipeline().addLast("protobufDecoder", null);
+                //ch.pipeline().addLast("protobufDecoder", null);
                 //编码用
                 ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(4, false));
                 ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
