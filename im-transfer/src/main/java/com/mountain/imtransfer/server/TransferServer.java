@@ -60,6 +60,7 @@ public class TransferServer implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments var1) {
+        logger.info("TransferServer.run ...");
         executorService.submit(() -> {
             //服务端要建立两个group，一个负责接收客户端的连接，一个负责处理数据传输
             //bossGroup就是parentGroup，是负责处理TCP/IP连接的，而workerGroup就是childGroup，是负责处理Channel（通道）的I/O事件。
@@ -98,6 +99,7 @@ public class TransferServer implements ApplicationRunner {
             } catch (Exception ex) {
                 logger.error("TransferServer.run:", ex);
             } finally {
+                logger.info("bossGroup.shutdownGracefully   workerGroup.shutdownGracefully");
                 bossGroup.shutdownGracefully();
                 workerGroup.shutdownGracefully();
             }
