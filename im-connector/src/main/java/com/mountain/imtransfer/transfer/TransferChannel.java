@@ -1,9 +1,9 @@
 package com.mountain.imtransfer.transfer;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.imtransfer.transfer.actor.IConnectionActor;
-import com.mountain.imtransfer.transfer.actor.impl.ConnectionActor;
-import com.mountain.imtransfer.transfer.constant.ConnectionConstant;
+import com.mountain.imtransfer.actor.ITransferActor;
+import com.mountain.imtransfer.actor.impl.TransferActor;
+import com.mountain.imtransfer.constant.TransferConstant;
 import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 
 @Data
 @Slf4j
-public class NetChannelObj {
+public class TransferChannel {
 
     /**
      * 创建时间
@@ -24,7 +24,7 @@ public class NetChannelObj {
 
     private String host;
 
-    private IConnectionActor actor;
+    private ITransferActor actor;
 
     /**
      * 是否无效了
@@ -49,12 +49,12 @@ public class NetChannelObj {
      */
     private Channel channel;
 
-    public NetChannelObj(String host, int port) throws InterruptedException {
+    public TransferChannel(String host, int port) throws InterruptedException {
         this.port = port;
         this.host = host;
         this.createTime = System.currentTimeMillis();
-        this.actor = new ConnectionActor(port, host);
-        this.channel = this.actor.connectionToServer();
+        this.actor = new TransferActor(port, host);
+        this.channel = this.actor.connectionToTransfer();
         if (this.channel != null) {
             //每隔30分钟发送一次心跳数据
             this.schedule.scheduleWithFixedDelay(() -> {
@@ -79,19 +79,19 @@ public class NetChannelObj {
     }
 
     public Object getContextParam(String key) {
-        HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(ConnectionConstant.NETTY_CHANNEL_ATTR_KEY).get();
+        HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).get();
         if (context == null) {
             context = new HashMap<>(16);
-            channel.attr(ConnectionConstant.NETTY_CHANNEL_ATTR_KEY).set(context);
+            channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).set(context);
         }
         return context.get(key);
     }
 
     public void setContextParam(String key, Object value) {
-        HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(ConnectionConstant.NETTY_CHANNEL_ATTR_KEY).get();
+        HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).get();
         if (context == null) {
             context = new HashMap<>(16);
-            channel.attr(ConnectionConstant.NETTY_CHANNEL_ATTR_KEY).set(context);
+            channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).set(context);
         }
         context.put(key, value);
     }

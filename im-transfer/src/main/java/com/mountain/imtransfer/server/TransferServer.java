@@ -36,7 +36,7 @@ public class TransferServer implements ApplicationRunner {
     private Integer transferPort;
 
     @Value("${transfer.name}")
-    private String transferServer;
+    private String transferName;
 
     @Value("${spring.cloud.nacos.discovery.server-addr}")
     private String serverAddress;
@@ -115,7 +115,7 @@ public class TransferServer implements ApplicationRunner {
         //服务地址的ip
         String ip = address.getHostAddress();
         //注册
-        namingService.registerInstance(transferServer, ip, transferPort);
+        namingService.registerInstance(transferName, ip, transferPort);
     }
 
 

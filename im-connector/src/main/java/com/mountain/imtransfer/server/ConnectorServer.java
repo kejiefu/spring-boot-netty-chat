@@ -26,11 +26,11 @@ import java.util.concurrent.*;
  * @Created by kejiefu
  */
 @Component
-public class ClientServer implements ApplicationRunner {
+public class ConnectorServer implements ApplicationRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientServer.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectorServer.class);
 
-    @Value("${connector.socket.port}")
+    @Value("${connector.port}")
     private Integer port;
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()

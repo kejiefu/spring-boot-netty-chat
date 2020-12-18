@@ -1,7 +1,7 @@
-package com.mountain.imtransfer.transfer.actor.impl;
+package com.mountain.imtransfer.actor.impl;
 
 
-import com.mountain.imtransfer.transfer.actor.IConnectionActor;
+import com.mountain.imtransfer.actor.ITransferActor;
 import com.mountain.imtransfer.handler.transfer.TransferHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -17,18 +17,18 @@ import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
-public class ConnectionActor implements IConnectionActor {
+public class TransferActor implements ITransferActor {
 
     private final int port;
     private final String host;
 
-    public ConnectionActor(int port, String host) {
+    public TransferActor(int port, String host) {
         this.port = port;
         this.host = host;
     }
 
     @Override
-    public Channel connectionToServer() throws InterruptedException {
+    public Channel connectionToTransfer() throws InterruptedException {
         Bootstrap clientConfig = new Bootstrap();
 
         EventLoopGroup group = new NioEventLoopGroup();

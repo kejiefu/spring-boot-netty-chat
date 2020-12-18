@@ -1,4 +1,4 @@
-package java.com.mountain.imgateway;
+package com.mountain.chatservice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Date 2020/9/19 11:18
  */
 @SpringBootApplication
-public class ImGatewayApplication {
+public class ChatServiceApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(ImGatewayApplication.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChatServiceApplication.class);
 
     public static void main(String[] args) {
         logger.info("~~~~~~~~~~~~~~~~ program start~~~~~~~~~~~~~~~~!");
-        SpringApplication.run(java.com.mountain.imgateway.ImGatewayApplication.class, args);
+        SpringApplication.run(ChatServiceApplication.class, args);
         logger.info("~~~~~~~~~~~~~~~~ program execute successfully~~~~~~~~~~~~~~~~!");
     }
 

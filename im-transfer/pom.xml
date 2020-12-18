@@ -34,7 +34,6 @@
         <openfeign.version>2.2.3.RELEASE</openfeign.version>
     </properties>
 
-
     <dependencyManagement>
         <dependencies>
             <!--依赖管理，用于管理 spring-cloud 的依赖-->

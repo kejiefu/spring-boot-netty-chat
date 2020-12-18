@@ -1,8 +1,12 @@
-package com.mountain.imtransfer.transfer.constant;
+package com.mountain.imtransfer.constant;
 
 import io.netty.util.AttributeKey;
 
-public class ConnectionConstant {
+/**
+ * Transfer
+ * @author kejiefu
+ */
+public class TransferConstant {
     
     /**
      * netty ChannelHandlerContext.attr()的key定义
