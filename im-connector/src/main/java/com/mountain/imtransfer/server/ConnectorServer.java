@@ -76,11 +76,11 @@ public class ConnectorServer implements ApplicationRunner {
                 ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
 
                 Channel channel = channelFuture.channel();
-                logger.info("ConnectorClientServer 已经启动,端口:" + port + ".");
+                logger.info("ConnectorServer 已经启动,端口:" + port + ".");
                 //等待服务监听端口关闭,就是由于这里会将线程阻塞，导致无法发送信息，所以我这里开了线程
                 channel.closeFuture().sync();
             } catch (Exception ex) {
-                logger.error("ConnectorClientServer.run:", ex);
+                logger.error("ConnectorServer.run:", ex);
             } finally {
                 logger.info("bossGroup.shutdownGracefully workerGroup.shutdownGracefully");
                 bossGroup.shutdownGracefully();
