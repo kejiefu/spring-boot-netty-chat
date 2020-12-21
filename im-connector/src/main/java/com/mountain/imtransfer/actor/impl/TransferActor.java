@@ -29,17 +29,17 @@ public class TransferActor implements ITransferActor {
 
     @Override
     public Channel connectionToTransfer() throws InterruptedException {
-        Bootstrap clientConfig = new Bootstrap();
+        Bootstrap bossGroup = new Bootstrap();
 
         EventLoopGroup group = new NioEventLoopGroup();
         //绑定客户端通道
-        clientConfig.channel(NioSocketChannel.class);
-        clientConfig.option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true);
-        clientConfig.group(group);
-        clientConfig.remoteAddress(host, port);
+        bossGroup.channel(NioSocketChannel.class);
+        bossGroup.option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true);
+        bossGroup.group(group);
+        bossGroup.remoteAddress(host, port);
         //NioSocketChannel初始化handler，处理读写事件
         //通道是NioSocketChannel
-        clientConfig.handler(new ChannelInitializer<NioSocketChannel>() {
+        bossGroup.handler(new ChannelInitializer<NioSocketChannel>() {
             @Override
             protected void initChannel(NioSocketChannel ch) {
                 //LengthFieldBasedFrameDecoder：TCP的解码器，可以靠它轻松搞定TCP粘包问题。
@@ -55,9 +55,8 @@ public class TransferActor implements ITransferActor {
                 ch.pipeline().addLast("handler", new TransferHandler());
             }
         });
-
-        // 连接服务器
-        ChannelFuture channelFuture = clientConfig.connect(host, port).sync();
+        //连接服务器
+        ChannelFuture channelFuture = bossGroup.connect(host, port).sync();
         channelFuture.addListener((ChannelFutureListener) arg0 -> {
             if (channelFuture.isSuccess()) {
                 log.info("netty client connection is successful ........................................");

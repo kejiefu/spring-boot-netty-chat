@@ -1,5 +1,5 @@
 server:
-  port: 18084
+  port: 18083
 
 #nacos集群的机器互联拷贝通知
 spring:

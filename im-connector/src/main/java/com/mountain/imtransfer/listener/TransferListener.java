@@ -60,7 +60,9 @@ public class TransferListener {
             for (Instance instance : instanceList) {
                 //初始化transfer的渠道
                 try {
-                    TransferFactory.getInstance().newChannel(instance.getIp(), instance.getPort());
+                    if(instance.isHealthy()){
+                        TransferFactory.getInstance().newChannel(instance.getIp(), instance.getPort());
+                    }
                 } catch (InterruptedException e) {
                     log.error("newChannel:", e);
                 }
