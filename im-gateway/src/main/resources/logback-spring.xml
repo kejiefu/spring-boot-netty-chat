@@ -11,7 +11,7 @@
     <springProperty scope="context" name="STDOUT" source="log.stdout" defaultValue="STDOUT"/>
 
     <!-- 日志文件名称-->
-    <property name="LOG_PREFIX" value="im-transfer" />
+    <property name="LOG_PREFIX" value="im-gateway" />
 
     <!-- 日志文件编码-->
     <property name="LOG_CHARSET" value="UTF-8" />

@@ -1,0 +1,16 @@
+server:
+  port: 8000
+
+#nacos集群的机器互联拷贝通知
+spring:
+  profiles:
+    active: public
+  application:
+    name: im-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
+      config:
+        server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
+        file-extension: yaml
