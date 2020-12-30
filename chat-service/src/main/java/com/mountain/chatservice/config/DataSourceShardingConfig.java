@@ -12,6 +12,7 @@ import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -24,10 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * sharding-jdbc 的数据源配置
+ * 依赖于hikariDataSource01要先创建
  *
  * @description: sharding-jdbc 的数据源配置
  */
 @Configuration
+@DependsOn({"hikariDataSource01"})
 public class DataSourceShardingConfig {
 
     private static final Snowflake snowflake = IdUtil.createSnowflake(1, 1);
@@ -42,7 +45,7 @@ public class DataSourceShardingConfig {
 
     @Bean(name = "dataSource")
     @Primary
-    public DataSource dataSource() throws SQLException {
+    public DataSource dataSource(@Qualifier("hikariDataSource01") HikariDataSource hikariDataSource01) throws SQLException {
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         // 设置分库策略
         shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
@@ -70,6 +73,7 @@ public class DataSourceShardingConfig {
         tableRule.setKeyGeneratorColumnName("order_id");
         return tableRule;
     }
+
 
     private Map<String, DataSource> dataSourceMap() {
         Map<String, DataSource> dataSourceMap = new HashMap<>(16);
@@ -105,6 +109,7 @@ public class DataSourceShardingConfig {
         dataSourceMap.put("ds1", ds1);
         return dataSourceMap;
     }
+
 
     /**
      * 自定义主键生成器

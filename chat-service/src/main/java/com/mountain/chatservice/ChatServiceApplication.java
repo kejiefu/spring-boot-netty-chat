@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @Date 2020/9/19 11:18
  */
 @SpringBootApplication
+@EnableDiscoveryClient
 @EnableTransactionManagement(proxyTargetClass = true)
 @MapperScan("com.mountain.chatservice.mapper")
 public class ChatServiceApplication {
