@@ -1,7 +1,7 @@
 # spring-boot-netty-chat
 可伸缩性/可扩展性基于netty开发分布式的聊天系统。
 
-技术架构：spring cloud，nacos 集群，netty，rabbitmq，mysql分库分表
+技术架构：spring cloud，nacos集群：版本1.4.0，netty，rabbitmq，mysql版本：8.0，分库分表
 
 connector：模块用于维持用户的长链接。
 
