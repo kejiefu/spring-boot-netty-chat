@@ -1,6 +1,6 @@
 package com.mountain.chatservice.config;
 
-import cn.hutool.core.lang.Snowflake;
+import com.baomidou.mybatisplus.core.toolkit.Sequence;
 import io.shardingsphere.core.keygen.KeyGenerator;
 
 /**
@@ -12,14 +12,15 @@ import io.shardingsphere.core.keygen.KeyGenerator;
  */
 public class CustomSnowflakeKeyGenerator implements KeyGenerator {
 
-    private Snowflake snowflake;
+    private Sequence sequence;
 
-    public CustomSnowflakeKeyGenerator(Snowflake snowflake) {
-        this.snowflake = snowflake;
+    public CustomSnowflakeKeyGenerator(Sequence sequence) {
+        this.sequence = sequence;
+
     }
 
     @Override
     public Number generateKey() {
-        return snowflake.nextId();
+        return sequence.nextId();
     }
 }

@@ -14,3 +14,10 @@ spring:
       config:
         server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
         file-extension: yaml
+#这些配置应该放到nacos
+#netty端口
+connector :
+  port: 8082
+#transfer服务名称
+transfer:
+  name: transfer-server
