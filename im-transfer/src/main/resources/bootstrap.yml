@@ -14,7 +14,20 @@ spring:
       config:
         server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
         file-extension: yaml
-#这些配置应该放到nacos
+  #这些配置应该放到nacos config
+  rabbitmq:
+    virtual-host: /
+    addresses: 120.24.28.171:5672           # RabbitMQ集群，addresses一定要逗号分隔   120.24.28.171:5672,120.24.28.171:5672
+    username: guest
+    password: guest
+    listener:
+      direct:
+        retry:
+          enabled: true
+      simple:
+        acknowledge-mode: manual
+        retry:
+          enabled: true
 transfer:
   port: 8083
   name: transfer-server

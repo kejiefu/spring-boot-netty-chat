@@ -1,9 +1,9 @@
-package com.mountain.imtransfer.server;
+package com.mountain.im.transfer.server;
 
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.imtransfer.handler.TransferHandler;
+import com.mountain.im.transfer.handler.TransferHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
