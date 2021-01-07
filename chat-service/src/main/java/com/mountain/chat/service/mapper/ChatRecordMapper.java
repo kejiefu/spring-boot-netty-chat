@@ -1,7 +1,7 @@
-package com.mountain.chatservice.mapper;
+package com.mountain.chat.service.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mountain.chatservice.entity.ChatRecord;
+import com.mountain.chat.service.entity.ChatRecord;
 import org.springframework.stereotype.Repository;
 
 /**

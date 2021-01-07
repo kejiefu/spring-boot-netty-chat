@@ -1,4 +1,4 @@
-package com.mountain.chatservice.handler;
+package com.mountain.chat.service.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;

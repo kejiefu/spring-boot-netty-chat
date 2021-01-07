@@ -1,5 +1,5 @@
 server:
-  port: 8099
+  port: 8088
 
 #nacos集群的机器互联拷贝通知
 spring:
@@ -14,7 +14,21 @@ spring:
       config:
         server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
         file-extension: yaml
-#这些配置应该放到nacos config
+  #这些配置应该放到nacos config
+  rabbitmq:
+    virtual-host: /
+    addresses: 120.24.28.171:5672           # RabbitMQ集群，addresses一定要逗号分隔   120.24.28.171:5672,120.24.28.171:5672
+    username: guest
+    password: guest
+    listener:
+      direct:
+        retry:
+          enabled: true
+      simple:
+        acknowledge-mode: manual
+        retry:
+          enabled: true
+#分库分表
 chat:
   datasource:
     ds0:

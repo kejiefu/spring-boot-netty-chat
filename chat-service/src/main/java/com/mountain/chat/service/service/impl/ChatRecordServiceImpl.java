@@ -1,9 +1,9 @@
-package com.mountain.chatservice.serviceimpl;
+package com.mountain.chat.service.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mountain.chatservice.entity.ChatRecord;
-import com.mountain.chatservice.mapper.ChatRecordMapper;
-import com.mountain.chatservice.service.ChatRecordService;
+import com.mountain.chat.service.entity.ChatRecord;
+import com.mountain.chat.service.mapper.ChatRecordMapper;
+import com.mountain.chat.service.service.ChatRecordService;
 import org.springframework.stereotype.Service;
 
 /**

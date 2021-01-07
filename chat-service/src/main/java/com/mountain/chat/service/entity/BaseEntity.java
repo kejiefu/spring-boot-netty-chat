@@ -1,4 +1,4 @@
-package com.mountain.chatservice.entity;
+package com.mountain.chat.service.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

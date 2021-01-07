@@ -1,6 +1,6 @@
-package com.mountain.chatservice.config;
+package com.mountain.chat.service.config;
 
-import com.mountain.chatservice.util.SequenceUtils;
+import com.mountain.chat.service.util.SequenceUtils;
 import com.zaxxer.hikari.HikariDataSource;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;

@@ -1,4 +1,4 @@
-package com.mountain.chatservice;
+package com.mountain.chat.service;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement(proxyTargetClass = true)
-@MapperScan("com.mountain.chatservice.mapper")
+@MapperScan("com.mountain.chat.service.mapper")
 public class ChatServiceApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(ChatServiceApplication.class);

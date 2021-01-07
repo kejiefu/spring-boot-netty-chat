@@ -1,19 +1,19 @@
-package com.mountain.chatservice.serviceimpl;
+package com.mountain.chat.service.service.impl;
 
-import com.mountain.chatservice.ApplicationTests;
-import com.mountain.chatservice.entity.ChatRecord;
-import com.mountain.chatservice.service.ChatRecordService;
-import com.mountain.chatservice.util.SequenceUtils;
+import com.mountain.chat.service.ApplicationTest;
+import com.mountain.chat.service.entity.ChatRecord;
+import com.mountain.chat.service.service.ChatRecordService;
+import com.mountain.chat.service.util.SequenceUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author kejiefu
  * @Description TODO
- * @Date 2020/12/31 14:56
+ * @Date 2021/1/6 21:08
  * @Created by kejiefu
  */
-public class ChatRecordServiceImplTest extends ApplicationTests {
+public class ChatRecordServiceImplTest extends ApplicationTest {
 
     @Autowired
     private ChatRecordService chatRecordService;

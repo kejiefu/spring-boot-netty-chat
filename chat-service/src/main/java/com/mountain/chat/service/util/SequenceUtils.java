@@ -1,4 +1,4 @@
-package com.mountain.chatservice.util;
+package com.mountain.chat.service.util;
 
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
 
@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Sequence;
  * @Date 2020/12/31 15:00
  * @Created by kejiefu
  */
+@SuppressWarnings("AlibabaConstantFieldShouldBeUpperCase")
 public class SequenceUtils {
 
     public final static Sequence sequence = new Sequence();

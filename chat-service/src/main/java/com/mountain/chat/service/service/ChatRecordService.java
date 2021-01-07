@@ -1,7 +1,7 @@
-package com.mountain.chatservice.service;
+package com.mountain.chat.service.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mountain.chatservice.entity.ChatRecord;
+import com.mountain.chat.service.entity.ChatRecord;
 
 /**
  * @author kejiefu

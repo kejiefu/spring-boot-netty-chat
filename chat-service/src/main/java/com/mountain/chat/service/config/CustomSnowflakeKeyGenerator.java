@@ -1,4 +1,4 @@
-package com.mountain.chatservice.config;
+package com.mountain.chat.service.config;
 
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
 import io.shardingsphere.core.keygen.KeyGenerator;

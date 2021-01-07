@@ -1,4 +1,4 @@
-package com.mountain.chatservice.config;
+package com.mountain.chat.service.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
