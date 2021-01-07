@@ -1,4 +1,4 @@
-package com.mountain.imtransfer.actor;
+package com.mountain.im.connector.actor;
 
 import io.netty.channel.Channel;
 

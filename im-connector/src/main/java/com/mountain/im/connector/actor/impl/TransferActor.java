@@ -1,8 +1,8 @@
-package com.mountain.imtransfer.actor.impl;
+package com.mountain.im.connector.actor.impl;
 
 
-import com.mountain.imtransfer.actor.ITransferActor;
-import com.mountain.imtransfer.handler.transfer.TransferHandler;
+import com.mountain.im.connector.actor.ITransferActor;
+import com.mountain.im.connector.handler.transfer.TransferHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

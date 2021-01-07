@@ -1,10 +1,10 @@
-package com.mountain.imtransfer.listener;
+package com.mountain.im.connector.listener;
 
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.mountain.imtransfer.factory.TransferFactory;
+import com.mountain.im.connector.factory.TransferFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.mountain.imtransfer.constant;
+package com.mountain.im.connector.constant;
 
 import io.netty.util.AttributeKey;
 

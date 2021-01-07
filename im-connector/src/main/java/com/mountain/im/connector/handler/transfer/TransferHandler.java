@@ -1,4 +1,4 @@
-package com.mountain.imtransfer.handler.transfer;
+package com.mountain.im.connector.handler.transfer;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

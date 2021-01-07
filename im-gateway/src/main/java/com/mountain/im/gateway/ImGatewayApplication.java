@@ -1,4 +1,4 @@
-package com.mountain.imgateway;
+package com.mountain.im.gateway;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.mountain.userservice;
+package com.mountain.user.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -44,7 +44,6 @@ public class ChatRecordListener {
             log.info("接收到消息Body：{}", messageBody.toString());
             ChatRecord chatRecord = MessageBody.getMessageData(message, ChatRecord.class);
             log.info("接收到消息Data：{}", chatRecord.toString());
-
         } catch (Exception e) {
             action = Action.REJECT;
             log.error("处理消息出错", e);
@@ -53,6 +52,7 @@ public class ChatRecordListener {
             if (action == Action.ACCEPT) {
                 // false 只确认当前 consumer 一个消息收到，true 确认所有 consumer 获得的消息。
                 channel.basicAck(deliveryTag, false);
+                log.info("处理消息成功");
             } else {
                 // 第二个 boolean 为 false 表示不会重试，为 true 会重新放回队列
                 // 如果绑定了死信队列，会放入死信队列

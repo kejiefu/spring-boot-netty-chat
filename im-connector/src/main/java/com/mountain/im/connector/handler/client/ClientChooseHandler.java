@@ -1,4 +1,4 @@
-package com.mountain.imtransfer.handler.client;
+package com.mountain.im.connector.handler.client;
 
 
 import io.netty.buffer.ByteBuf;

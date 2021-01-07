@@ -1,8 +1,8 @@
-package com.mountain.imtransfer.factory;
+package com.mountain.im.connector.factory;
 
 
-import com.mountain.imtransfer.transfer.TransferChannel;
-import com.mountain.imtransfer.constant.TransferConstant;
+import com.mountain.im.connector.constant.TransferConstant;
+import com.mountain.im.connector.transfer.TransferChannel;
 import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 

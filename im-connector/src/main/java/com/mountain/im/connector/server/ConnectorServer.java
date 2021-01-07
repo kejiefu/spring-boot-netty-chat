@@ -1,7 +1,7 @@
-package com.mountain.imtransfer.server;
+package com.mountain.im.connector.server;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.imtransfer.handler.client.NettyServerInitializer;
+import com.mountain.im.connector.handler.client.NettyServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
