@@ -5,6 +5,7 @@ import com.mountain.chat.service.config.RabbitMqConfig;
 import com.mountain.chat.service.entity.ChatRecord;
 import com.mountain.chat.service.listener.core.Action;
 import com.mountain.chat.service.listener.core.MessageBody;
+import com.mountain.chat.service.service.ChatRecordService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -12,6 +13,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -23,6 +25,9 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class ChatRecordListener {
+
+    @Resource
+    ChatRecordService recordService;
 
     /**
      * 监听单个队列
@@ -37,13 +42,12 @@ public class ChatRecordListener {
     private void messageHandler(Message message, Channel channel) throws IOException {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         Action action = Action.ACCEPT;
-        String messageId = "";
         try {
             MessageBody messageBody = MessageBody.getMessageBody(message);
-            messageId = messageBody.getMessageId();
             log.info("接收到消息Body：{}", messageBody.toString());
             ChatRecord chatRecord = MessageBody.getMessageData(message, ChatRecord.class);
             log.info("接收到消息Data：{}", chatRecord.toString());
+            recordService.save(chatRecord);
         } catch (Exception e) {
             action = Action.REJECT;
             log.error("处理消息出错", e);

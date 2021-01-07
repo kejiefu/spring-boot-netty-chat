@@ -16,6 +16,10 @@ public abstract class BaseEntity implements Serializable {
 
     @ApiModelProperty(hidden = true)
     @TableField(fill = FieldFill.INSERT)
+    private Integer deleted;
+
+    @ApiModelProperty(hidden = true)
+    @TableField(fill = FieldFill.INSERT)
     private Long createTime;
 
     @ApiModelProperty(hidden = true)

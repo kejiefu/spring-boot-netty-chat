@@ -1,11 +1,19 @@
 # spring-boot-netty-chat
-可伸缩性/可扩展性基于netty开发分布式的聊天系统。
+#### 一套高可用、易伸缩、高并发的IM群聊、单聊架构聊天系统。
+
+
+
+#### 架构图：
+
+![](https://github.com/kejiefu/spring-boot-netty-chat/blob/main/netty-chat.jpg)
+
+
 
 技术架构：spring cloud，nacos集群：版本1.4.0，netty，rabbitmq，mysql版本：8.0，分库分表
 
 connector：模块用于维持用户的长链接。
 
-transfer：作用是将消息在多个connector之间转发。
+transfer：模块是将消息在不同的机器之间转发，使服务可以水平扩展。为了满足实时转发，transfer需要和每台connector机器都保持长链接。
 
 gateway：网关，处理http信息，例如注册，登录，查询聊天记录
 
