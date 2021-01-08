@@ -5,7 +5,7 @@
 
 #### 架构图：
 
-![](https://github.com/kejiefu/spring-boot-netty-chat/blob/main/netty-flow.jpg)
+![](https://github.com/kejiefu/spring-boot-netty-chat/blob/main/chat-flow.jpg)
 
 
 
