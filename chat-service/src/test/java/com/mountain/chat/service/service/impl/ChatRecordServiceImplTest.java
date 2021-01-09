@@ -23,12 +23,14 @@ public class ChatRecordServiceImplTest extends ApplicationTest {
      */
     @Test
     public void testSave() {
-        ChatRecord chatRecord = new ChatRecord();
-        chatRecord.setId(SequenceUtils.getId());
-        chatRecord.setContent(String.valueOf(System.currentTimeMillis()));
-        chatRecord.setUserId(1L);
-        chatRecord.setToUserId(2L);
-        chatRecordService.save(chatRecord);
+        for (long i = 1; i <= 20; i++) {
+            ChatRecord chatRecord = new ChatRecord();
+            chatRecord.setId(SequenceUtils.getId());
+            chatRecord.setContent(String.valueOf(System.currentTimeMillis()));
+            chatRecord.setUserId(i);
+            chatRecord.setToUserId(2L);
+            chatRecordService.save(chatRecord);
+        }
     }
 
 }
