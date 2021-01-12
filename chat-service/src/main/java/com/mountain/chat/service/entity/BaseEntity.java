@@ -15,8 +15,8 @@ import java.io.Serializable;
 public abstract class BaseEntity implements Serializable {
 
     @ApiModelProperty(hidden = true)
-    @TableField(fill = FieldFill.INSERT)
-    private Integer deleted;
+    @TableField(value = "is_delete", fill = FieldFill.INSERT)
+    private Integer delete;
 
     @ApiModelProperty(hidden = true)
     @TableField(fill = FieldFill.INSERT)
