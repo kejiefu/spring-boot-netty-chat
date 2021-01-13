@@ -1,7 +1,10 @@
 package com.mountain.chat.service.config;
 
+import com.google.common.collect.Lists;
 import com.mountain.chat.service.util.SequenceUtils;
 import com.zaxxer.hikari.HikariDataSource;
+import io.shardingsphere.api.algorithm.masterslave.RoundRobinMasterSlaveLoadBalanceAlgorithm;
+import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
 import io.shardingsphere.api.config.strategy.InlineShardingStrategyConfiguration;
@@ -17,9 +20,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -72,7 +73,20 @@ public class DataSourceShardingConfig {
         dataSourceMap.put("ds0", hikariDataSource0);
         dataSourceMap.put("ds1", hikariDataSource1);
 
+        //主从配置，支持多主多从
+        //shardingRuleConfig.setMasterSlaveRuleConfigs(getMasterSlaveRuleConfigurations());
+
         return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, new ConcurrentHashMap<>(16), properties);
+    }
+
+    private static List<MasterSlaveRuleConfiguration> getMasterSlaveRuleConfigurations() {
+        RoundRobinMasterSlaveLoadBalanceAlgorithm loadBalanceAlgorithm = new RoundRobinMasterSlaveLoadBalanceAlgorithm();
+        MasterSlaveRuleConfiguration masterSlaveRuleConfig1 =
+                new MasterSlaveRuleConfiguration("ds_0", "demo_ds_master_0",
+                        Arrays.asList("demo_ds_master_0_slave_0", "demo_ds_master_0_slave_1"), loadBalanceAlgorithm);
+        MasterSlaveRuleConfiguration masterSlaveRuleConfig2 = new MasterSlaveRuleConfiguration("ds_1", "demo_ds_master_1",
+                Arrays.asList("demo_ds_master_1_slave_0", "demo_ds_master_1_slave_1"), loadBalanceAlgorithm);
+        return Lists.newArrayList(masterSlaveRuleConfig1, masterSlaveRuleConfig2);
     }
 
     private TableRuleConfiguration chartRecordTableRule() {

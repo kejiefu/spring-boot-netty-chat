@@ -41,10 +41,10 @@ public class TransferServer implements ApplicationRunner {
     @Value("${spring.cloud.nacos.discovery.server-addr}")
     private String serverAddress;
 
-    private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+    private static final ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("ConnectorClientServer-pool-%d").build();
 
-    private static ExecutorService executorService = new ThreadPoolExecutor(1, 1,
+    private static final ExecutorService executorService = new ThreadPoolExecutor(1, 1,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(1), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
@@ -65,6 +65,7 @@ public class TransferServer implements ApplicationRunner {
             //服务端要建立两个group，一个负责接收客户端的连接，一个负责处理数据传输
             //bossGroup就是parentGroup，是负责处理TCP/IP连接的，而workerGroup就是childGroup，是负责处理Channel（通道）的I/O事件。
             //连接处理group
+            //使用 NioEventLoopGroup 类的无参构造函数设置线程数量的默认值就是 CPU 核心数 *2 。
             EventLoopGroup bossGroup = new NioEventLoopGroup();
             //事件处理group
             EventLoopGroup workerGroup = new NioEventLoopGroup();
