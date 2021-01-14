@@ -15,16 +15,16 @@ public class ChatRecord extends BaseEntity {
     /**
      * 主键
      */
-    private Long id;
+    private String id;
     /**
      * 用户id
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 接收话的用户id
      */
-    private Long toUserId;
+    private String toUserId;
     /**
      * 内容
      */

@@ -142,6 +142,9 @@
     <logger name="com.alibaba.dubbo.monitor" level="ERROR"/>
     <logger name="com.alibaba.dubbo.remoting" level="ERROR" />
 
+    <!-- 项目内的打印DEBUG-->
+    <logger name="com.mountain" level="DEBUG" />
+
     <!-- ${LOG_ROOT_LEVEL} 日志级别 -->
     <root level="${LOG_ROOT_LEVEL}">
 

@@ -25,8 +25,8 @@ public class ChatRecordServiceImplTest extends ApplicationTest {
         for (int i = 0; i < 5; i++) {
             ChatRecordDto chatRecordDto = new ChatRecordDto();
             chatRecordDto.setContent("我是来测试的呢");
-            chatRecordDto.setUserId(1L);
-            chatRecordDto.setToUserId(2L);
+            chatRecordDto.setUserId("1");
+            chatRecordDto.setToUserId("2");
             chatRecordService.sendChatRecord(chatRecordDto);
         }
     }

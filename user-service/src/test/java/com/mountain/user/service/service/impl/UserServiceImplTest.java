@@ -1,12 +1,13 @@
 package com.mountain.user.service.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mountain.common.domain.Result;
 import com.mountain.user.service.ApplicationTest;
 import com.mountain.user.service.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
 import javax.annotation.Resource;
-
-import static org.junit.Assert.*;
 
 /**
  * @author kejiefu
@@ -21,8 +22,23 @@ public class UserServiceImplTest extends ApplicationTest {
 
     @Test
     public void register() {
-        String username = "";
-        String password = "";
-        userService.register(username, password);
+        String username = "ke";
+        String password = DigestUtils.md5Hex("123456");
+        Result<Boolean> result = userService.register(username, password);
+        System.out.println(JSONObject.toJSONString(result));
+    }
+
+    @Test
+    public void login() {
+        String username = "ke";
+        String password = DigestUtils.md5Hex("123456");
+        Result<String> result = userService.login(username, password);
+        System.out.println(JSONObject.toJSONString(result));
+    }
+
+    @Test
+    public void getUser() {
+        Result result = userService.getUser("1349643297211699201");
+        System.out.println(JSONObject.toJSONString(result));
     }
 }

@@ -28,13 +28,13 @@ public class ChatRecordListenerTest extends ApplicationTest {
     @Test
     public void consume() {
         ChatRecord chatRecord = new ChatRecord();
-        long id = SequenceUtils.getId();
+        String id = String.valueOf(SequenceUtils.getId());
         //消息唯一ID
         CorrelationData correlationData = new CorrelationData(id + "");
         chatRecord.setId(id);
         chatRecord.setContent("我是来测试的呢");
-        chatRecord.setUserId(1L);
-        chatRecord.setToUserId(2L);
+        chatRecord.setUserId("1");
+        chatRecord.setToUserId("2");
         MessageBody messageBodyDto = new MessageBody();
         messageBodyDto.setCreateTime(DateUtil.format(new Date(), DatePattern.NORM_DATETIME_FORMAT));
         messageBodyDto.setData(chatRecord);

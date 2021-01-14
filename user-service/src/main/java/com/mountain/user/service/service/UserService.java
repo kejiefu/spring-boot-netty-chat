@@ -15,10 +15,27 @@ public interface UserService extends IService<User> {
     /**
      * 注册
      *
-     * @param username
-     * @param password
-     * @return
+     * @param username 账号
+     * @param password 密码
+     * @return Result
      */
     Result<Boolean> register(String username, String password);
+
+    /**
+     * 登录
+     *
+     * @param username 账号
+     * @param password 密码
+     * @return Result
+     */
+    Result<String> login(String username, String password);
+
+    /**
+     * 获取user
+     *
+     * @param id id
+     * @return
+     */
+    Result<User> getUser(String id);
 
 }

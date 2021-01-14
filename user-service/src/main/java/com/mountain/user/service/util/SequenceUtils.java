@@ -1,4 +1,4 @@
-package com.mountain.chat.service.util;
+package com.mountain.user.service.util;
 
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
 

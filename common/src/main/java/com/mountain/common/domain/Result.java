@@ -1,7 +1,5 @@
 package com.mountain.common.domain;
 
-import com.mountain.common.eums.ReturnCode;
-
 /**
  * 返回类
  *
@@ -45,7 +43,7 @@ public class Result<T> {
     }
 
     public static <T> Result<T> success(T data) {
-        return new Result(ReturnCode.success.getCode(), ReturnCode.success.getMsg(), System.currentTimeMillis(), data);
+        return new Result(ReturnCode.SUCCESS.getCode(), ReturnCode.SUCCESS.getMsg(), System.currentTimeMillis(), data);
     }
 
     public static Result fail() {
@@ -53,15 +51,15 @@ public class Result<T> {
     }
 
     public static Result fail(ReturnCode returnCode) {
-        return null == returnCode ? fail(ReturnCode.fail.getCode(), ReturnCode.fail.getMsg(), (Object)null) : fail(returnCode.getCode(), returnCode.getMsg(), (Object)null);
+        return null == returnCode ? fail(ReturnCode.FAIL.getCode(), ReturnCode.FAIL.getMsg(), (Object)null) : fail(returnCode.getCode(), returnCode.getMsg(), (Object)null);
     }
 
     public static <T> Result<T> fail(T data) {
-        return fail(ReturnCode.fail.getCode(), ReturnCode.fail.getMsg(), data);
+        return fail(ReturnCode.FAIL.getCode(), ReturnCode.FAIL.getMsg(), data);
     }
 
     public static <T> Result<T> fail(String msg, T data) {
-        return fail(ReturnCode.fail.getCode(), msg, data);
+        return fail(ReturnCode.FAIL.getCode(), msg, data);
     }
 
     public static Result fail(Integer code, String msg) {
@@ -77,11 +75,11 @@ public class Result<T> {
     }
 
     public static <T> Result<T> error(T data) {
-        return error(ReturnCode.serverError.getCode(), ReturnCode.serverError.getMsg(), data);
+        return error(ReturnCode.SERVER_ERROR.getCode(), ReturnCode.SERVER_ERROR.getMsg(), data);
     }
 
     public static <T> Result<T> error(String msg, T data) {
-        return error(ReturnCode.serverError.getCode(), msg, data);
+        return error(ReturnCode.SERVER_ERROR.getCode(), msg, data);
     }
 
     public static Result error(Integer code, String msg) {

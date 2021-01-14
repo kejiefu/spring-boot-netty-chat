@@ -1,6 +1,7 @@
 package com.mountain.user.service.controller;
 
 import com.mountain.common.domain.Result;
+import com.mountain.user.service.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
 
 /**
  * @author kejiefu
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    @Resource
+    UserService userService;
 
     @ApiOperation("登录")
     @PostMapping("/login")
@@ -36,9 +42,11 @@ public class UserController {
 
     @ApiOperation("注册")
     @PostMapping("/register")
-    public Result<Void> register() {
-
-        return null;
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名"),
+            @ApiImplicitParam(name = "password", value = "用户密码")})
+    public Result<Boolean> register(@RequestParam String username, @RequestParam String password) {
+        return userService.register(username, password);
     }
 
 }

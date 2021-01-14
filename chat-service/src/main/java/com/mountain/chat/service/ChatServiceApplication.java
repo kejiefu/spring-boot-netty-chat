@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableTransactionManagement(proxyTargetClass = true)
+@EnableTransactionManagement
 @MapperScan("com.mountain.chat.service.mapper")
 public class ChatServiceApplication {
 

@@ -28,6 +28,12 @@ public class User extends BaseEntity {
      */
     private String password;
 
+
+    /**
+     * 在线状态，0：不在线，1：在线
+     */
+    private Integer onlineStatus;
+
     /**
      * 状态，0：启用，1：禁用，2：逻辑删除
      */
