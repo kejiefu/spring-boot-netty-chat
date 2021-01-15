@@ -11,7 +11,7 @@
 
 技术架构：spring cloud，nacos集群：版本1.4.0，netty，rabbitmq，mysql版本：8.0，分库分表
 
-connector：模块用于维持用户的长链接。
+connector：模块用于维持用户端的长链接。
 
 transfer：模块是将消息在不同的机器之间转发，使服务可以水平扩展。为了满足实时转发，transfer需要和每台connector机器都保持长链接。
 
