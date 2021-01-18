@@ -15,20 +15,26 @@ public class ChatRecord extends BaseEntity {
     /**
      * 主键
      */
-    private String id;
+    private Long id;
     /**
      * 用户id
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 接收话的用户id
      */
-    private String toUserId;
+    private Long toUserId;
+
     /**
-     * 内容
+     * 聊天消息
      */
-    private String content;
+    private String msg;
+
+    /**
+     * 回执数据格式ACK，默认已发送，0：sent（已发送），1：delivered（已送达）, 2：read（已读）
+     */
+    private Integer msgType;
 
 
 }

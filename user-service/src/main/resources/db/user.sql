@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 14/01/2021 21:24:59
+ Date: 18/01/2021 18:30:07
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user`  (
-  `id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `id` bigint(0) NOT NULL COMMENT '主键',
   `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
   `online_status` tinyint(0) NULL DEFAULT 0 COMMENT '在线状态，0：不在线，1：在线',
@@ -37,6 +37,6 @@ CREATE TABLE `t_user`  (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1349643297211699201', 'ke', 'e10adc3949ba59abbe56e057f20f883e', 1, 0, 0, 1610615012173, 1610615012173);
+INSERT INTO `t_user` VALUES (1349643297211699201, 'ke', 'e10adc3949ba59abbe56e057f20f883e', 1, 0, 0, 1610615012173, 1610615012173);
 
 SET FOREIGN_KEY_CHECKS = 1;

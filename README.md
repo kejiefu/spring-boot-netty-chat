@@ -20,3 +20,7 @@ gateway：网关，处理http信息，例如注册，登录，查询聊天记录
 user-service：用户信息
 
 chat-service：存储聊天信息，查询聊天信息，分库分表
+
+rabbitmq：解耦聊天的信息存储
+
+redis：存储用户当前在线状态与对应的connector地址

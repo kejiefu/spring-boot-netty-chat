@@ -6,6 +6,7 @@ import com.mountain.chat.service.entity.ChatRecord;
 import com.mountain.chat.service.listener.core.Action;
 import com.mountain.chat.service.listener.core.MessageBody;
 import com.mountain.chat.service.service.ChatRecordService;
+import com.mountain.common.eums.MsgTypeEnum;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -46,6 +47,7 @@ public class ChatRecordListener {
             MessageBody messageBody = MessageBody.getMessageBody(message);
             log.info("接收到消息Body：{}", messageBody.toString());
             ChatRecord chatRecord = MessageBody.getMessageData(message, ChatRecord.class);
+            chatRecord.setMsgType(MsgTypeEnum.SENT.getCode());
             log.info("接收到消息Data：{}", chatRecord.toString());
             recordService.save(chatRecord);
         } catch (Exception e) {

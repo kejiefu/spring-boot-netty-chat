@@ -13,20 +13,20 @@ public class ChatRecordDto {
     /**
      * 主键
      */
-    private String id;
+    private Long id;
     /**
      * 用户id
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 接收话的用户id
      */
-    private String toUserId;
+    private Long toUserId;
     /**
-     * 内容
+     * 聊天消息
      */
-    private String content;
+    private String msg;
 
 
 }

@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result<Boolean> register(String username, String password) {
         User user = new User();
-        user.setId(SequenceUtils.getIdStr());
+        user.setId(SequenceUtils.getId());
         user.setUsername(username);
         user.setPassword(password);
         user.setStatus(UserStatusEnum.YES.getCode());
@@ -67,6 +67,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             updateWrapper.lambda().set(User::getOnlineStatus, OnlineStatusEnum.YES.getCode());
             updateWrapper.lambda().eq(User::getId, user.getId());
             this.update(updateWrapper);
+            //更新用户的redis状态
+
             return Result.success(String.valueOf(user.getId()));
         }
         return Result.fail(ReturnCode.INCORRECT_ACCOUNT_PASSWORD);

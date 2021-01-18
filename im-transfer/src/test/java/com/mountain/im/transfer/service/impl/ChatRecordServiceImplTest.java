@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 
-import static org.junit.Assert.*;
-
 /**
  * @author kejiefu
  * @Description TODO
@@ -24,9 +22,9 @@ public class ChatRecordServiceImplTest extends ApplicationTest {
     public void sendChatRecord() {
         for (int i = 0; i < 5; i++) {
             ChatRecordDto chatRecordDto = new ChatRecordDto();
-            chatRecordDto.setContent("我是来测试的呢");
-            chatRecordDto.setUserId("1");
-            chatRecordDto.setToUserId("2");
+            chatRecordDto.setMsg("我是来测试的呢");
+            chatRecordDto.setUserId(1L);
+            chatRecordDto.setToUserId(2L);
             chatRecordService.sendChatRecord(chatRecordDto);
         }
     }

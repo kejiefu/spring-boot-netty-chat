@@ -17,8 +17,5 @@ public class SequenceUtils {
         return sequence.nextId();
     }
 
-    public static String getIdStr() {
-        return String.valueOf(sequence.nextId());
-    }
 
 }
