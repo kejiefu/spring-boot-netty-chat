@@ -1,9 +1,10 @@
 package com.mountain.im.connector.transfer;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.im.connector.constant.TransferConstant;
 import com.mountain.im.connector.actor.ITransferActor;
 import com.mountain.im.connector.actor.impl.TransferActor;
+import com.mountain.im.connector.constant.HeartBeatConstant;
+import com.mountain.im.connector.constant.TransferConstant;
 import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.concurrent.*;
 
+/**
+ * @author kejiefu
+ */
 @Data
 @Slf4j
 public class TransferChannel {
@@ -35,6 +39,12 @@ public class TransferChannel {
      * 默认最大并发数:cpu 核心 x 2<br>
      */
     private static final int CORE_POOL_SIZE = 1;
+
+    /**
+     * 心跳连接时间
+     */
+    private long heartConnectTime = System.currentTimeMillis();
+
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("ConnectorClientServer-pool-%d").build();
@@ -61,6 +71,13 @@ public class TransferChannel {
 
             }, 1, 1800, TimeUnit.SECONDS);
         }
+    }
+
+    /**
+     * 心跳是否已经停止，目前暂定距离最近1次收到心跳的时间超过5分钟就认为心跳停止
+     */
+    public boolean isHeatBeatStop(long now) {
+        return (now - this.heartConnectTime) > HeartBeatConstant.HEART_BEAT_CHECK;
     }
 
     /**

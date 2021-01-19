@@ -27,6 +27,11 @@ public class TransferActor implements ITransferActor {
         this.host = host;
     }
 
+    /**
+     * 连接通道
+     * @return
+     * @throws InterruptedException
+     */
     @Override
     public Channel connectionToTransfer() throws InterruptedException {
         Bootstrap bossGroup = new Bootstrap();

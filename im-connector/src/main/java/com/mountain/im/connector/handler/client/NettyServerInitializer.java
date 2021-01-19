@@ -4,8 +4,8 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
 /**
- * @Author: lsx
- * @Date: Create in 2020/5/22 16:07
+ * 初始化
+ * @author kejiefu
  */
 public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
 
