@@ -1,4 +1,4 @@
-package com.mountain.im.transfer.dto;
+package com.mountain.im.transfer.model;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * @author kejiefu
  */
 @Data
-public class ChatRecordDto {
+public class ChatRecord {
 
     /**
      * 主键

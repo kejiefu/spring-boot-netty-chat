@@ -3,8 +3,8 @@ package com.mountain.im.transfer.service.impl;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.mountain.im.transfer.config.RabbitMqConfig;
-import com.mountain.im.transfer.dto.ChatRecordDto;
-import com.mountain.im.transfer.dto.MessageBodyDto;
+import com.mountain.im.transfer.model.ChatRecord;
+import com.mountain.im.transfer.model.MessageBody;
 import com.mountain.im.transfer.service.ChatRecordService;
 import com.mountain.im.transfer.util.SequenceUtils;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -27,12 +27,12 @@ public class ChatRecordServiceImpl implements ChatRecordService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public void sendChatRecord(ChatRecordDto chatRecordDto) {
+    public void sendChatRecord(ChatRecord chatRecordDto) {
         long id = SequenceUtils.getId();
         //消息唯一ID
         CorrelationData correlationData = new CorrelationData(id + "");
         chatRecordDto.setId(id);
-        MessageBodyDto messageBodyDto = new MessageBodyDto();
+        MessageBody messageBodyDto = new MessageBody();
         messageBodyDto.setCreateTime(DateUtil.format(new Date(), DatePattern.NORM_DATETIME_FORMAT));
         messageBodyDto.setData(chatRecordDto);
         messageBodyDto.setMessageId(String.valueOf(id));

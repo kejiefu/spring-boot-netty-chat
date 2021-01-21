@@ -1,10 +1,15 @@
 package com.mountain.im.connector.transfer;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.protobuf.ByteString;
+import com.mountain.common.domain.BaseMessage;
+import com.mountain.common.eums.CmdEnum;
 import com.mountain.im.connector.actor.ITransferActor;
 import com.mountain.im.connector.actor.impl.TransferActor;
 import com.mountain.im.connector.constant.HeartBeatConstant;
 import com.mountain.im.connector.constant.TransferConstant;
+import com.mountain.im.connector.model.protobuf.BaseMessageProto;
 import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -66,10 +71,24 @@ public class TransferChannel {
         this.actor = new TransferActor(port, host);
         this.channel = this.actor.connectionToTransfer();
         if (this.channel != null) {
-            //每隔30分钟发送一次心跳数据
+            //每隔一段时间发送一次心跳数据
             this.schedule.scheduleWithFixedDelay(() -> {
-
-            }, 1, 1800, TimeUnit.SECONDS);
+                try {
+                    //组装心跳内容
+                    BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
+                    //发送心跳数据，防止IM服务器断掉连接
+                    BaseMessage baseMessage = new BaseMessage();
+                    baseMessage.setCmd(CmdEnum.HEART_BEAT.getCode());
+                    baseMessage.setData("心跳");
+                    ByteString bytes = ByteString.copyFrom(JSONObject.toJSONString(baseMessage), "UTF-8");
+                    builder.setData(bytes);
+                    BaseMessageProto.BaseMessage message = builder.build();
+                    log.info("发送心跳到transfer...");
+                    this.channel.writeAndFlush(message);
+                } catch (Exception ex) {
+                    log.error("scheduleWithFixedDelay:", ex);
+                }
+            }, 1000, HeartBeatConstant.HEART_BEAT_CHECK, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -122,5 +141,6 @@ public class TransferChannel {
             this.channel = null;
         }
     }
+
 
 }

@@ -1,4 +1,4 @@
-package com.mountain.im.transfer.dto;
+package com.mountain.im.transfer.model;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
@@ -15,18 +15,18 @@ import java.util.UUID;
  */
 @Data
 @Slf4j
-public class MessageBodyDto implements Serializable {
+public class MessageBody implements Serializable {
 
     private String messageId;
     private String createTime;
     private Object data;
 
-    public MessageBodyDto() {
+    public MessageBody() {
         messageId = String.valueOf(UUID.randomUUID());
         createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public MessageBodyDto(Object data) {
+    public MessageBody(Object data) {
         this();
         this.data = data;
     }
@@ -35,11 +35,11 @@ public class MessageBodyDto implements Serializable {
         return JSON.parseObject(this.getData().toString(), type);
     }
 
-    public static MessageBodyDto getMessageBody(Message message) {
-        MessageBodyDto messageBody = null;
+    public static MessageBody getMessageBody(Message message) {
+        MessageBody messageBody = null;
         try {
             String s = new String(message.getBody(), "utf-8");
-            messageBody = JSON.parseObject(s, MessageBodyDto.class);
+            messageBody = JSON.parseObject(s, MessageBody.class);
         } catch (Exception e) {
             log.info(e.getMessage());
         }
@@ -47,6 +47,6 @@ public class MessageBodyDto implements Serializable {
     }
 
     public static <T> T getMessageData(Message message, Class<T> type) {
-        return MessageBodyDto.getMessageBody(message).getData(type);
+        return MessageBody.getMessageBody(message).getData(type);
     }
 }

@@ -1,6 +1,6 @@
 package com.mountain.im.transfer.service;
 
-import com.mountain.im.transfer.dto.ChatRecordDto;
+import com.mountain.im.transfer.model.ChatRecord;
 
 /**
  * @author kejiefu
@@ -13,6 +13,6 @@ public interface ChatRecordService {
     /**
      * 发送聊天信息
      */
-    void sendChatRecord(ChatRecordDto chatRecordDto);
+    void sendChatRecord(ChatRecord chatRecordDto);
 
 }

@@ -42,7 +42,7 @@ public class TransferListener {
             List<Instance> instanceList = namingService.selectInstances(transferName, true);
             log.info("instanceList:{}", instanceList);
             initChannel(instanceList);
-            //监听服务下的实例列表变化,就是还剩下多少健康实例
+            //监听服务下的实例列表变化,增加或减少实例触发绑定渠道或去除渠道
             namingService.subscribe(transferName, event -> {
                 if (event instanceof NamingEvent) {
                     log.info("监听服务下的实例列表变化，{}，{}", ((NamingEvent) event).getServiceName(), ((NamingEvent) event).getInstances());

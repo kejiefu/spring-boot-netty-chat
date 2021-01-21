@@ -4,11 +4,17 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mountain.im.transfer.handler.TransferHandler;
+import com.mountain.im.transfer.model.protobuf.BaseMessageProto;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,6 +83,14 @@ public class TransferServer implements ApplicationRunner {
                             @Override
                             protected void initChannel(SocketChannel channel) throws Exception {
                                 ChannelPipeline pipeline = channel.pipeline();
+                                pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+                                pipeline.addLast("protobufDecoder", new ProtobufDecoder(BaseMessageProto.BaseMessage.getDefaultInstance()));
+
+                                pipeline.addLast("frameEncoder", new LengthFieldPrepender(4, false));
+                                pipeline.addLast("protobufEncoder", new ProtobufEncoder());
+
+                                pipeline.addLast("readTimeOut", new ReadTimeoutHandler(1200,TimeUnit.SECONDS));
+
                                 pipeline.addLast("handler", new TransferHandler());
                             }
                         });

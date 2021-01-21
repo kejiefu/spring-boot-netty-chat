@@ -1,7 +1,7 @@
 package com.mountain.im.transfer.service.impl;
 
 import com.mountain.im.transfer.ApplicationTest;
-import com.mountain.im.transfer.dto.ChatRecordDto;
+import com.mountain.im.transfer.model.ChatRecord;
 import com.mountain.im.transfer.service.ChatRecordService;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class ChatRecordServiceImplTest extends ApplicationTest {
     @Test
     public void sendChatRecord() {
         for (int i = 0; i < 5; i++) {
-            ChatRecordDto chatRecordDto = new ChatRecordDto();
+            ChatRecord chatRecordDto = new ChatRecord();
             chatRecordDto.setMsg("我是来测试的呢");
             chatRecordDto.setUserId(1L);
             chatRecordDto.setToUserId(2L);
