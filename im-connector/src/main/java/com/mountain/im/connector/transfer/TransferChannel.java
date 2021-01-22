@@ -3,8 +3,8 @@ package com.mountain.im.connector.transfer;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
-import com.mountain.common.domain.BaseMessage;
-import com.mountain.common.eums.CmdEnum;
+import com.mountain.common.domain.ProtobufData;
+import com.mountain.common.eums.ProtobufDataTypeEnum;
 import com.mountain.im.connector.actor.ITransferActor;
 import com.mountain.im.connector.actor.impl.TransferActor;
 import com.mountain.im.connector.constant.HeartBeatConstant;
@@ -76,14 +76,15 @@ public class TransferChannel {
                 try {
                     //组装心跳内容
                     BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
-                    //发送心跳数据，防止IM服务器断掉连接
-                    BaseMessage baseMessage = new BaseMessage();
-                    baseMessage.setCmd(CmdEnum.HEART_BEAT.getCode());
-                    baseMessage.setData("心跳");
-                    ByteString bytes = ByteString.copyFrom(JSONObject.toJSONString(baseMessage), "UTF-8");
+                    ProtobufData protobufData = new ProtobufData();
+                    protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
+                    protobufData.setContent("心跳");
+                    protobufData.setTime(System.currentTimeMillis());
+                    String jsonString = JSONObject.toJSONString(protobufData);
+                    ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
                     builder.setData(bytes);
                     BaseMessageProto.BaseMessage message = builder.build();
-                    log.info("发送心跳到transfer...");
+                    log.info("发送心跳到transfer,{}", jsonString);
                     this.channel.writeAndFlush(message);
                 } catch (Exception ex) {
                     log.error("scheduleWithFixedDelay:", ex);

@@ -83,14 +83,15 @@ public class TransferServer implements ApplicationRunner {
                             @Override
                             protected void initChannel(SocketChannel channel) throws Exception {
                                 ChannelPipeline pipeline = channel.pipeline();
+                                //解码
                                 pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
                                 pipeline.addLast("protobufDecoder", new ProtobufDecoder(BaseMessageProto.BaseMessage.getDefaultInstance()));
-
+                                //编码
                                 pipeline.addLast("frameEncoder", new LengthFieldPrepender(4, false));
                                 pipeline.addLast("protobufEncoder", new ProtobufEncoder());
-
+                                //超时
                                 pipeline.addLast("readTimeOut", new ReadTimeoutHandler(1200,TimeUnit.SECONDS));
-
+                                //处理
                                 pipeline.addLast("handler", new TransferHandler());
                             }
                         });

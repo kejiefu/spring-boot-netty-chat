@@ -8,6 +8,18 @@
     <artifactId>common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <build.skip.assembly>true</build.skip.assembly>
+        <build.skip.dependency.self>false</build.skip.dependency.self><!--false-->
+        <build.skip.dependency.third>false</build.skip.dependency.third><!--false-->
+        <build.skip.test>true</build.skip.test><!--true-->
+        <build.skip.install>false</build.skip.install>
+        <build.skip.install>true</build.skip.install>
+        <build.skip.deploy>true</build.skip.deploy>
+        <build.skip.assembly>false</build.skip.assembly>
+    </properties>
+
     <dependencies>
         <!-- lombok-->
         <dependency>
@@ -16,5 +28,6 @@
             <version>1.18.6</version>
         </dependency>
     </dependencies>
+
 
 </project>

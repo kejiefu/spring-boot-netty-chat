@@ -17,34 +17,10 @@ public final class BaseMessageProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     *命令
-     * </pre>
-     *
-     * <code>int32 cmd = 1;</code>
-     * @return The cmd.
-     */
-    int getCmd();
-
-    /**
-     * <pre>
-     *数据
-     * </pre>
-     *
-     * <code>string data = 2;</code>
+     * <code>bytes data = 1;</code>
      * @return The data.
      */
-    String getData();
-    /**
-     * <pre>
-     *数据
-     * </pre>
-     *
-     * <code>string data = 2;</code>
-     * @return The bytes for data.
-     */
-    com.google.protobuf.ByteString
-        getDataBytes();
+    com.google.protobuf.ByteString getData();
   }
   /**
    * Protobuf type {@code BaseMessage}
@@ -59,7 +35,7 @@ public final class BaseMessageProto {
       super(builder);
     }
     private BaseMessage() {
-      data_ = "";
+      data_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @Override
@@ -92,15 +68,9 @@ public final class BaseMessageProto {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
 
-              cmd_ = input.readInt32();
-              break;
-            }
-            case 18: {
-              String s = input.readStringRequireUtf8();
-
-              data_ = s;
+              data_ = input.readBytes();
               break;
             }
             default: {
@@ -135,65 +105,15 @@ public final class BaseMessageProto {
               BaseMessage.class, Builder.class);
     }
 
-    public static final int CMD_FIELD_NUMBER = 1;
-    private int cmd_;
+    public static final int DATA_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString data_;
     /**
-     * <pre>
-     *命令
-     * </pre>
-     *
-     * <code>int32 cmd = 1;</code>
-     * @return The cmd.
-     */
-    @Override
-    public int getCmd() {
-      return cmd_;
-    }
-
-    public static final int DATA_FIELD_NUMBER = 2;
-    private volatile Object data_;
-    /**
-     * <pre>
-     *数据
-     * </pre>
-     *
-     * <code>string data = 2;</code>
+     * <code>bytes data = 1;</code>
      * @return The data.
      */
     @Override
-    public String getData() {
-      Object ref = data_;
-      if (ref instanceof String) {
-        return (String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
-        data_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *数据
-     * </pre>
-     *
-     * <code>string data = 2;</code>
-     * @return The bytes for data.
-     */
-    @Override
-    public com.google.protobuf.ByteString
-        getDataBytes() {
-      Object ref = data_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
-        data_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public com.google.protobuf.ByteString getData() {
+      return data_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -210,11 +130,8 @@ public final class BaseMessageProto {
     @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (cmd_ != 0) {
-        output.writeInt32(1, cmd_);
-      }
-      if (!getDataBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, data_);
+      if (!data_.isEmpty()) {
+        output.writeBytes(1, data_);
       }
       unknownFields.writeTo(output);
     }
@@ -225,12 +142,9 @@ public final class BaseMessageProto {
       if (size != -1) return size;
 
       size = 0;
-      if (cmd_ != 0) {
+      if (!data_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, cmd_);
-      }
-      if (!getDataBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, data_);
+          .computeBytesSize(1, data_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -247,8 +161,6 @@ public final class BaseMessageProto {
       }
       BaseMessage other = (BaseMessage) obj;
 
-      if (getCmd()
-          != other.getCmd()) return false;
       if (!getData()
           .equals(other.getData())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -262,8 +174,6 @@ public final class BaseMessageProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + CMD_FIELD_NUMBER;
-      hash = (53 * hash) + getCmd();
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -399,9 +309,7 @@ public final class BaseMessageProto {
       @Override
       public Builder clear() {
         super.clear();
-        cmd_ = 0;
-
-        data_ = "";
+        data_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
       }
@@ -429,7 +337,6 @@ public final class BaseMessageProto {
       @Override
       public BaseMessage buildPartial() {
         BaseMessage result = new BaseMessage(this);
-        result.cmd_ = cmd_;
         result.data_ = data_;
         onBuilt();
         return result;
@@ -479,12 +386,8 @@ public final class BaseMessageProto {
 
       public Builder mergeFrom(BaseMessage other) {
         if (other == BaseMessage.getDefaultInstance()) return this;
-        if (other.getCmd() != 0) {
-          setCmd(other.getCmd());
-        }
-        if (!other.getData().isEmpty()) {
-          data_ = other.data_;
-          onChanged();
+        if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
+          setData(other.getData());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -515,102 +418,21 @@ public final class BaseMessageProto {
         return this;
       }
 
-      private int cmd_ ;
+      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <pre>
-       *命令
-       * </pre>
-       *
-       * <code>int32 cmd = 1;</code>
-       * @return The cmd.
-       */
-      @Override
-      public int getCmd() {
-        return cmd_;
-      }
-      /**
-       * <pre>
-       *命令
-       * </pre>
-       *
-       * <code>int32 cmd = 1;</code>
-       * @param value The cmd to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCmd(int value) {
-        
-        cmd_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *命令
-       * </pre>
-       *
-       * <code>int32 cmd = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCmd() {
-        
-        cmd_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private Object data_ = "";
-      /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>string data = 2;</code>
+       * <code>bytes data = 1;</code>
        * @return The data.
        */
-      public String getData() {
-        Object ref = data_;
-        if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          data_ = s;
-          return s;
-        } else {
-          return (String) ref;
-        }
+      @Override
+      public com.google.protobuf.ByteString getData() {
+        return data_;
       }
       /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>string data = 2;</code>
-       * @return The bytes for data.
-       */
-      public com.google.protobuf.ByteString
-          getDataBytes() {
-        Object ref = data_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          data_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>string data = 2;</code>
+       * <code>bytes data = 1;</code>
        * @param value The data to set.
        * @return This builder for chaining.
        */
-      public Builder setData(
-          String value) {
+      public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -620,36 +442,12 @@ public final class BaseMessageProto {
         return this;
       }
       /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>string data = 2;</code>
+       * <code>bytes data = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearData() {
         
         data_ = getDefaultInstance().getData();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>string data = 2;</code>
-       * @param value The bytes for data to set.
-       * @return This builder for chaining.
-       */
-      public Builder setDataBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        data_ = value;
         onChanged();
         return this;
       }
@@ -720,9 +518,8 @@ public final class BaseMessageProto {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\021BaseMessage.proto\"(\n\013BaseMessage\022\013\n\003cm" +
-      "d\030\001 \001(\005\022\014\n\004data\030\002 \001(\tB\022B\020BaseMessageProt" +
-      "ob\006proto3"
+      "\n\021BaseMessage.proto\"\033\n\013BaseMessage\022\014\n\004da" +
+      "ta\030\001 \001(\014B\022B\020BaseMessageProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -733,7 +530,7 @@ public final class BaseMessageProto {
     internal_static_BaseMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BaseMessage_descriptor,
-        new String[] { "Cmd", "Data", });
+        new String[] { "Data", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

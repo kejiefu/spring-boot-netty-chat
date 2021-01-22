@@ -1,0 +1,5 @@
+syntax = "proto3";
+option java_outer_classname = "BaseMessageProto";
+message BaseMessage {  
+  bytes data=1;
+}

@@ -17,21 +17,7 @@ public final class BaseMessageProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     *命令
-     * </pre>
-     *
-     * <code>int32 cmd = 1;</code>
-     * @return The cmd.
-     */
-    int getCmd();
-
-    /**
-     * <pre>
-     *数据
-     * </pre>
-     *
-     * <code>bytes data = 2;</code>
+     * <code>bytes data = 1;</code>
      * @return The data.
      */
     com.google.protobuf.ByteString getData();
@@ -82,12 +68,7 @@ public final class BaseMessageProto {
             case 0:
               done = true;
               break;
-            case 8: {
-
-              cmd_ = input.readInt32();
-              break;
-            }
-            case 18: {
+            case 10: {
 
               data_ = input.readBytes();
               break;
@@ -124,29 +105,10 @@ public final class BaseMessageProto {
               BaseMessage.class, Builder.class);
     }
 
-    public static final int CMD_FIELD_NUMBER = 1;
-    private int cmd_;
-    /**
-     * <pre>
-     *命令
-     * </pre>
-     *
-     * <code>int32 cmd = 1;</code>
-     * @return The cmd.
-     */
-    @Override
-    public int getCmd() {
-      return cmd_;
-    }
-
-    public static final int DATA_FIELD_NUMBER = 2;
+    public static final int DATA_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString data_;
     /**
-     * <pre>
-     *数据
-     * </pre>
-     *
-     * <code>bytes data = 2;</code>
+     * <code>bytes data = 1;</code>
      * @return The data.
      */
     @Override
@@ -168,11 +130,8 @@ public final class BaseMessageProto {
     @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (cmd_ != 0) {
-        output.writeInt32(1, cmd_);
-      }
       if (!data_.isEmpty()) {
-        output.writeBytes(2, data_);
+        output.writeBytes(1, data_);
       }
       unknownFields.writeTo(output);
     }
@@ -183,13 +142,9 @@ public final class BaseMessageProto {
       if (size != -1) return size;
 
       size = 0;
-      if (cmd_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, cmd_);
-      }
       if (!data_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, data_);
+          .computeBytesSize(1, data_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -206,8 +161,6 @@ public final class BaseMessageProto {
       }
       BaseMessage other = (BaseMessage) obj;
 
-      if (getCmd()
-          != other.getCmd()) return false;
       if (!getData()
           .equals(other.getData())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -221,8 +174,6 @@ public final class BaseMessageProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + CMD_FIELD_NUMBER;
-      hash = (53 * hash) + getCmd();
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -358,8 +309,6 @@ public final class BaseMessageProto {
       @Override
       public Builder clear() {
         super.clear();
-        cmd_ = 0;
-
         data_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
@@ -388,7 +337,6 @@ public final class BaseMessageProto {
       @Override
       public BaseMessage buildPartial() {
         BaseMessage result = new BaseMessage(this);
-        result.cmd_ = cmd_;
         result.data_ = data_;
         onBuilt();
         return result;
@@ -438,9 +386,6 @@ public final class BaseMessageProto {
 
       public Builder mergeFrom(BaseMessage other) {
         if (other == BaseMessage.getDefaultInstance()) return this;
-        if (other.getCmd() != 0) {
-          setCmd(other.getCmd());
-        }
         if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
           setData(other.getData());
         }
@@ -473,56 +418,9 @@ public final class BaseMessageProto {
         return this;
       }
 
-      private int cmd_ ;
-      /**
-       * <pre>
-       *命令
-       * </pre>
-       *
-       * <code>int32 cmd = 1;</code>
-       * @return The cmd.
-       */
-      @Override
-      public int getCmd() {
-        return cmd_;
-      }
-      /**
-       * <pre>
-       *命令
-       * </pre>
-       *
-       * <code>int32 cmd = 1;</code>
-       * @param value The cmd to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCmd(int value) {
-        
-        cmd_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *命令
-       * </pre>
-       *
-       * <code>int32 cmd = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCmd() {
-        
-        cmd_ = 0;
-        onChanged();
-        return this;
-      }
-
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>bytes data = 2;</code>
+       * <code>bytes data = 1;</code>
        * @return The data.
        */
       @Override
@@ -530,11 +428,7 @@ public final class BaseMessageProto {
         return data_;
       }
       /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>bytes data = 2;</code>
+       * <code>bytes data = 1;</code>
        * @param value The data to set.
        * @return This builder for chaining.
        */
@@ -548,11 +442,7 @@ public final class BaseMessageProto {
         return this;
       }
       /**
-       * <pre>
-       *数据
-       * </pre>
-       *
-       * <code>bytes data = 2;</code>
+       * <code>bytes data = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearData() {
@@ -628,9 +518,8 @@ public final class BaseMessageProto {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\021BaseMessage.proto\"(\n\013BaseMessage\022\013\n\003cm" +
-      "d\030\001 \001(\005\022\014\n\004data\030\002 \001(\014B\022B\020BaseMessageProt" +
-      "ob\006proto3"
+      "\n\021BaseMessage.proto\"\033\n\013BaseMessage\022\014\n\004da" +
+      "ta\030\001 \001(\014B\022B\020BaseMessageProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -641,7 +530,7 @@ public final class BaseMessageProto {
     internal_static_BaseMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BaseMessage_descriptor,
-        new String[] { "Cmd", "Data", });
+        new String[] { "Data", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
