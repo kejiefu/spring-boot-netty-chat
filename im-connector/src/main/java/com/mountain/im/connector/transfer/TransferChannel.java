@@ -25,14 +25,28 @@ import java.util.concurrent.*;
 public class TransferChannel {
 
     /**
+     * 网络对象
+     */
+    private Channel channel;
+
+    /**
      * 创建时间
      */
     private long createTime;
 
+    /**
+     * 端口
+     */
     private int port;
 
+    /**
+     * ip
+     */
     private String host;
 
+    /**
+     * 连接
+     */
     private ITransferActor actor;
 
     /**
@@ -48,8 +62,7 @@ public class TransferChannel {
     /**
      * 心跳连接时间
      */
-    private long heartConnectTime = System.currentTimeMillis();
-
+    public long heartConnectTime = System.currentTimeMillis();
 
     private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("ConnectorClientServer-pool-%d").build();
@@ -58,11 +71,6 @@ public class TransferChannel {
      * 定时任务线程
      */
     private final ScheduledExecutorService schedule = new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
-
-    /**
-     * 网络对象
-     */
-    private Channel channel;
 
     public TransferChannel(String host, int port) throws InterruptedException {
         this.port = port;
@@ -94,7 +102,7 @@ public class TransferChannel {
     }
 
     /**
-     * 心跳是否已经停止，目前暂定距离最近1次收到心跳的时间超过5分钟就认为心跳停止
+     * 心跳是否已经停止
      */
     public boolean isHeatBeatStop(long now) {
         return (now - this.heartConnectTime) > HeartBeatConstant.HEART_BEAT_CHECK;
@@ -107,13 +115,6 @@ public class TransferChannel {
         channel.close();
     }
 
-
-    /**
-     * 发送socket的响应
-     */
-    public void pushBytes() {
-        channel.writeAndFlush(null);
-    }
 
     public Object getContextParam(String key) {
         HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).get();
@@ -128,15 +129,13 @@ public class TransferChannel {
         HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).get();
         if (context == null) {
             context = new HashMap<>(16);
+            context.put(key, value);
             channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).set(context);
         }
-        context.put(key, value);
     }
-
 
     public void disconnect() {
         if (this.channel != null) {
-            log.info("连接已经断开,serverId=" + this.getContextParam("serverId"));
             this.channel.disconnect();
             this.schedule.shutdown();
             this.channel = null;

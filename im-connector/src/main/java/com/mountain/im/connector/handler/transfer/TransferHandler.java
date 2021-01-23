@@ -2,18 +2,24 @@ package com.mountain.im.connector.handler.transfer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mountain.common.domain.ProtobufData;
+import com.mountain.common.eums.ProtobufDataTypeEnum;
+import com.mountain.im.connector.factory.TransferFactory;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
+import com.mountain.im.connector.transfer.TransferChannel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
-
+/**
+ * @author kejiefu
+ */
 @Slf4j
 public class TransferHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
         log.info("handlerRemoved...");
+        TransferFactory.getInstance().onClose(ctx.channel());
     }
 
     @Override
@@ -22,7 +28,11 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
         if (msg instanceof BaseMessageProto.BaseMessage) {
             String stringUtf8 = ((BaseMessageProto.BaseMessage) msg).getData().toStringUtf8();
             ProtobufData protobufData = JSONObject.parseObject(stringUtf8, ProtobufData.class);
-            log.info("收到心跳回应消息,protobufData:{},currentTimeMillis:{}", protobufData, System.currentTimeMillis());
+            if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
+                log.info("收到心跳回应消息,protobufData:{},currentTimeMillis:{}", protobufData, System.currentTimeMillis());
+                TransferChannel transferChannel = TransferFactory.getInstance().getChannel(ctx.channel());
+                transferChannel.setHeartConnectTime(System.currentTimeMillis());
+            }
         }
     }
 

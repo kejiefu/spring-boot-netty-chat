@@ -37,6 +37,7 @@ public class TransferFactory {
 
     /**
      * 新创建一个通道
+     *
      * @param host host
      * @param port port
      * @return
@@ -50,37 +51,54 @@ public class TransferFactory {
         }
         //通道如果不存在的话，就建立起关系
         transferChannel = new TransferChannel(host, port);
+        transferChannel.setContextParam("serverId", serverId);
+        log.info("contextParam:{}", transferChannel.getContextParam("serverId"));
         this.channelsMap.put(serverId, transferChannel);
         return transferChannel;
     }
 
+    /**
+     * 去除channel
+     *
+     * @param serverId
+     */
     public void removeChannel(String serverId) {
         this.channelsMap.remove(serverId);
     }
 
     /**
+     * 获取 TransferChannel
+     */
+    public TransferChannel getChannel(Channel channel) {
+        HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).get();
+        if (context == null) {
+            return null;
+        }
+        String serverId = (String) context.get("serverId");
+        TransferChannel transferChannel = this.channelsMap.get(serverId);
+        log.info("serverId:{},transferChannel:{}", serverId, transferChannel);
+        return transferChannel;
+    }
+
+    /**
      * 关闭
+     *
      * @param channel
      */
     public void onClose(Channel channel) {
         HashMap<String, Object> context = (HashMap<String, Object>) channel.attr(TransferConstant.NETTY_CHANNEL_ATTR_KEY).get();
-
         if (context == null) {
             return;
         }
-
         String serverId = (String) context.get("serverId");
-
         TransferChannel transferChannel = this.channelsMap.get(serverId);
-
         if (transferChannel == null) {
             log.error("onClose未处理,已经被踢下线,serverId=" + serverId);
             return;
         }
-
         synchronized (transferChannel) {
             if (!transferChannel.isDead()) {
-                log.info("IP:{}断开连接", transferChannel.getHost());
+                log.info("host:{},port:{},断开连接", transferChannel.getHost(), transferChannel.getPort());
                 this.removeChannel(serverId);
                 transferChannel.setDead(true);
                 transferChannel.disconnect();

@@ -25,6 +25,7 @@ public class TransferTask {
         while (iter.hasNext()) {
             TransferChannel next = iter.next();
             if (next.isHeatBeatStop(System.currentTimeMillis())) {
+                log.error("心跳超时去除,{}", next);
                 next.disconnect();
                 iter.remove();
             }
