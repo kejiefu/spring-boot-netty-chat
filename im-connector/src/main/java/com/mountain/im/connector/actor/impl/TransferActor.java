@@ -12,10 +12,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -51,14 +48,12 @@ public class TransferActor implements ITransferActor {
             protected void initChannel(NioSocketChannel ch) {
                 //LengthFieldBasedFrameDecoder：TCP的解码器，可以靠它轻松搞定TCP粘包问题。
                 ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+                ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(4, false));
                 //构造函数传递要解码成的类型
                 //可以通过：protobuf方式进行解码和编码，以提高网络消息的传输效率。
                 ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(BaseMessageProto.BaseMessage.getDefaultInstance()));
                 //编码
-                ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(4, false));
                 ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
-                //超时
-                ch.pipeline().addLast("readTimeOut", new ReadTimeoutHandler(1200, TimeUnit.SECONDS));
                 //转发信息的处理
                 ch.pipeline().addLast("handler", new TransferHandler());
             }

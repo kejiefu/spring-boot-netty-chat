@@ -11,10 +11,8 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 处理客户端的消息
@@ -50,17 +48,14 @@ public class ClientChooseHandler extends ByteToMessageDecoder {
             ctx.pipeline().addLast("socketHandler", new ClientServerHandler());
         } else {
             //  常规TCP连接时，执行以下处理
-
             //LengthFieldBasedFrameDecoder：TCP的解码器，可以靠它轻松搞定TCP粘包问题。
             ctx.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+            ctx.pipeline().addLast("frameEncoder", new LengthFieldPrepender(4, false));
             //构造函数传递要解码成的类型
             //可以通过：protobuf方式进行解码和编码，以提高网络消息的传输效率。
             ctx.pipeline().addLast("protobufDecoder", null);
-
-            //编码用
-            ctx.pipeline().addLast("frameEncoder", new LengthFieldPrepender(4, false));
+            //编码
             ctx.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
-            ctx.pipeline().addLast("readTimeOut", new ReadTimeoutHandler(1200, TimeUnit.SECONDS));
             ctx.pipeline().addLast("handler", new ClientServerHandler());
         }
         in.resetReaderIndex();

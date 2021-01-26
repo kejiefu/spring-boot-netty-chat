@@ -96,13 +96,11 @@ public class TransferFactory {
             log.error("onClose未处理,已经被踢下线,serverId=" + serverId);
             return;
         }
-        synchronized (transferChannel) {
-            if (!transferChannel.isDead()) {
-                log.info("host:{},port:{},断开连接", transferChannel.getHost(), transferChannel.getPort());
-                this.removeChannel(serverId);
-                transferChannel.setDead(true);
-                transferChannel.disconnect();
-            }
+        if (!transferChannel.isDead()) {
+            log.info("host:{},port:{},断开连接", transferChannel.getHost(), transferChannel.getPort());
+            this.removeChannel(serverId);
+            transferChannel.setDead(true);
+            transferChannel.disconnect();
         }
     }
 
