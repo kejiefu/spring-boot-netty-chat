@@ -96,8 +96,9 @@ public class DataSourceShardingConfig {
         // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
         tableRule.setActualDataNodes("ds${0..1}.t_chat_record_${0..2}");
         tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "t_chat_record_$->{user_id % 3}"));
-        tableRule.setKeyGenerator(customKeyGenerator());
-        tableRule.setKeyGeneratorColumnName("user_id");
+        //不需要配置自增列
+        //tableRule.setKeyGenerator(customKeyGenerator());
+        //tableRule.setKeyGeneratorColumnName("user_id");
         return tableRule;
     }
 
@@ -107,9 +108,10 @@ public class DataSourceShardingConfig {
         tableRule.setLogicTable("t_group_record");
         // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
         tableRule.setActualDataNodes("ds${0..1}.t_group_record_${0..2}");
+        //基于行表达式的分片算法，字符串不能用此分片
         tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("group_id", "t_group_record_$->{user_id % 3}"));
-        tableRule.setKeyGenerator(customKeyGenerator());
-        tableRule.setKeyGeneratorColumnName("group_id");
+        //tableRule.setKeyGenerator(customKeyGenerator());
+        //tableRule.setKeyGeneratorColumnName("group_id");
         return tableRule;
     }
 

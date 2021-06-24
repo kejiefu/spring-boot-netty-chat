@@ -11,6 +11,7 @@ import com.mountain.im.connector.constant.HeartBeatConstant;
 import com.mountain.im.connector.constant.TransferConstant;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,7 +94,7 @@ public class TransferChannel {
                     builder.setData(bytes);
                     BaseMessageProto.BaseMessage message = builder.build();
                     log.info("发送心跳到transfer,{}", jsonString);
-                    this.channel.writeAndFlush(message);
+                    ChannelFuture channelFuture =  this.channel.writeAndFlush(message);
                 } catch (Exception ex) {
                     log.error("scheduleWithFixedDelay:", ex);
                 }
