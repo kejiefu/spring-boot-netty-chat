@@ -31,11 +31,16 @@ public class UserFriendMessageVo implements Serializable {
     /**
      * 未读信息
      */
-    private Integer unread = 0;
+    private Integer unread = 1;
 
     /**
      * 时间信息
      */
     private String time;
+
+    /**
+     * 最后的消息
+     */
+    private String summary = "点击发送消息";
 
 }

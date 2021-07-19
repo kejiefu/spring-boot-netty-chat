@@ -46,7 +46,7 @@ public class UserFriendServiceImpl extends ServiceImpl<UserFriendMapper, UserFri
             List<Long> friendIdList = userFriendList.stream().map(UserFriend::getFriendId).collect(Collectors.toList());
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
             userQueryWrapper.lambda().in(User::getId, friendIdList);
-            userQueryWrapper.lambda().select(User::getHeadPortrait, User::getId);
+            userQueryWrapper.lambda().select(User::getHeadPortrait, User::getId, User::getUsername);
             List<User> userList = userService.list(userQueryWrapper);
             for (UserFriend userFriend : userFriendList) {
                 UserFriendMessageVo userFriendMessageVo = new UserFriendMessageVo();

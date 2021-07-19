@@ -5,7 +5,7 @@
     <springProperty scope="context" name="LOG_HOME" source="logging.path" defaultValue="./logs"/>
 
     <!-- 日志级别 -->
-    <springProperty scope="context" name="LOG_ROOT_LEVEL" source="logging.level.root" defaultValue="INFO"/>
+    <springProperty scope="context" name="LOG_ROOT_LEVEL" source="logging.level.root" defaultValue="DEBUG"/>
 
     <!--  标识这个"STDOUT" 将会添加到这个logger -->
     <springProperty scope="context" name="STDOUT" source="log.stdout" defaultValue="STDOUT"/>
@@ -141,6 +141,7 @@
     <logger name="org.apache.zookeeper"    level="ERROR"  />
     <logger name="com.alibaba.dubbo.monitor" level="ERROR"/>
     <logger name="com.alibaba.dubbo.remoting" level="ERROR" />
+    <logger name="com.alibaba.nacos.client.naming" level="ERROR" />
 
     <!-- 项目内的打印DEBUG-->
     <logger name="com.mountain" level="DEBUG" />

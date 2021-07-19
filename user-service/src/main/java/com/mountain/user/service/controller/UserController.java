@@ -2,6 +2,7 @@ package com.mountain.user.service.controller;
 
 import com.mountain.common.domain.Result;
 import com.mountain.user.service.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  * @Date 2021/1/11 21:31
  * @Created by kejiefu
  */
+@Api(value = "user", tags = "user")
 @Controller
 @RequestMapping("/user")
 public class UserController {

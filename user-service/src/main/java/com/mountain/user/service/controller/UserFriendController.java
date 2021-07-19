@@ -2,6 +2,7 @@ package com.mountain.user.service.controller;
 
 import com.mountain.common.domain.Result;
 import com.mountain.user.service.service.UserFriendService;
+import com.mountain.user.service.vo.UserFriendMessageVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 用户好友表(TUserFriend)表控制层
  *
@@ -21,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "userFriend", tags = "userFriend")
 @RestController
 @RequestMapping("/user-friend")
-public class UserFriendController  {
+public class UserFriendController {
 
     /**
      * 服务对象
@@ -33,7 +36,7 @@ public class UserFriendController  {
     @PostMapping("/message")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id"),})
-    public Result message(@RequestParam Long userId) {
+    public Result<List<UserFriendMessageVo>> message(@RequestParam("userId") Long userId) {
         return userFriendService.listUserFriendMessageVo(userId);
     }
 
