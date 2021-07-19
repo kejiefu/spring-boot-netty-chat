@@ -7,7 +7,7 @@ import com.mountain.common.domain.Result;
 import com.mountain.common.domain.ReturnCode;
 import com.mountain.common.eums.OnlineStatusEnum;
 import com.mountain.common.eums.UserStatusEnum;
-import com.mountain.user.service.enitty.User;
+import com.mountain.user.service.entity.User;
 import com.mountain.user.service.mapper.UserMapper;
 import com.mountain.user.service.service.UserService;
 import com.mountain.user.service.util.SequenceUtils;

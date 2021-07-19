@@ -15,7 +15,7 @@ public class CommonFieldHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill ....");
-        this.setFieldValByName("deleted", 0, metaObject);
+        this.setFieldValByName("isDelete", 0, metaObject);
         this.setFieldValByName("createTime", System.currentTimeMillis(), metaObject);
         this.setFieldValByName("updateTime", System.currentTimeMillis(), metaObject);
     }

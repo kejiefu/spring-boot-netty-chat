@@ -2,7 +2,7 @@ package com.mountain.user.service.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mountain.common.domain.Result;
-import com.mountain.user.service.enitty.User;
+import com.mountain.user.service.entity.User;
 
 /**
  * @author kejiefu

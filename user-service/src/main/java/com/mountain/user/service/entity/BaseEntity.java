@@ -1,4 +1,4 @@
-package com.mountain.user.service.enitty;
+package com.mountain.user.service.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -16,7 +16,7 @@ public abstract class BaseEntity implements Serializable {
 
     @ApiModelProperty(hidden = true)
     @TableField(value = "is_delete", fill = FieldFill.INSERT)
-    private Integer deleted;
+    private Integer isDelete;
 
     @ApiModelProperty(hidden = true)
     @TableField(fill = FieldFill.INSERT)
@@ -25,6 +25,15 @@ public abstract class BaseEntity implements Serializable {
     @ApiModelProperty(hidden = true)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
+
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 
     public Long getCreateTime() {
         return createTime;

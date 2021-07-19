@@ -1,7 +1,7 @@
 package com.mountain.user.service.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mountain.user.service.enitty.User;
+import com.mountain.user.service.entity.User;
 import org.springframework.stereotype.Repository;
 
 /**
