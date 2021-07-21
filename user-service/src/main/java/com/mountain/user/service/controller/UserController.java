@@ -1,6 +1,7 @@
 package com.mountain.user.service.controller;
 
 import com.mountain.common.domain.Result;
+import com.mountain.user.service.dto.UserLoginDto;
 import com.mountain.user.service.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -32,8 +33,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名"),
             @ApiImplicitParam(name = "password", value = "用户密码")})
-    public Result<Void> login(@RequestParam String username, @RequestParam String password) {
-        return null;
+    public Result login(UserLoginDto userLoginDto) {
+        return userService.login(userLoginDto.getUsername(), userLoginDto.getPassword());
     }
 
     @ApiOperation("登出")

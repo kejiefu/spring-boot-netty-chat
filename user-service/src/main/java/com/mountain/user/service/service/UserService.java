@@ -28,7 +28,7 @@ public interface UserService extends IService<User> {
      * @param password 密码
      * @return Result
      */
-    Result<String> login(String username, String password);
+    Result login(String username, String password);
 
     /**
      * 获取user
