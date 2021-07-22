@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -21,7 +18,7 @@ import javax.annotation.Resource;
  * @Created by kejiefu
  */
 @Api(value = "user", tags = "user")
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
@@ -33,7 +30,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名"),
             @ApiImplicitParam(name = "password", value = "用户密码")})
-    public Result login(UserLoginDto userLoginDto) {
+    public Result login(@RequestBody UserLoginDto userLoginDto) {
         return userService.login(userLoginDto.getUsername(), userLoginDto.getPassword());
     }
 
