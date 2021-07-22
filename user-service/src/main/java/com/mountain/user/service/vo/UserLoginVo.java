@@ -23,5 +23,10 @@ public class UserLoginVo implements Serializable {
      */
     private String authorization;
 
+    /**
+     * 头像
+     */
+    private String headPortrait;
+
 
 }

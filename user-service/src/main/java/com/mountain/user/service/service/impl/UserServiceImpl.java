@@ -85,6 +85,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             UserLoginVo userLoginVo = new UserLoginVo();
             userLoginVo.setAuthorization(token);
             userLoginVo.setUsername(user.getUsername());
+            userLoginVo.setHeadPortrait(user.getHeadPortrait());
 
             return Result.success(userLoginVo);
         }
