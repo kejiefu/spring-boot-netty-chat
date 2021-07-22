@@ -4,6 +4,7 @@ import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Maps;
 import com.mountain.common.domain.Result;
 import com.mountain.common.domain.ReturnCode;
 import com.mountain.common.eums.OnlineStatusEnum;
@@ -16,7 +17,6 @@ import com.mountain.user.service.vo.UserLoginVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -76,7 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             updateWrapper.lambda().eq(User::getId, user.getId());
             this.update(updateWrapper);
             //生成token
-            Map<String, Object> payload = new HashMap<>();
+            Map<String, Object> payload = Maps.newHashMap();
             payload.put("userId", user.getId());
             payload.put("userName", user.getUsername());
 
@@ -85,7 +85,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             UserLoginVo userLoginVo = new UserLoginVo();
             userLoginVo.setAuthorization(token);
             userLoginVo.setUserName(user.getUsername());
-            return Result.success(token);
+
+            return Result.success(userLoginVo);
         }
         return Result.fail(ReturnCode.INCORRECT_ACCOUNT_PASSWORD);
     }

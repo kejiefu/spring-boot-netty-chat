@@ -43,4 +43,9 @@ public class UserFriendMessageVo implements Serializable {
      */
     private String summary = "点击发送消息";
 
+    /**
+     * 在线状态，0：不在线，1：在线
+     */
+    private Integer onlineStatus;
+
 }

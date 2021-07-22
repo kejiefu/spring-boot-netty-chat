@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,9 +34,9 @@ public class UserFriendController {
     @ApiOperation("好友信息")
     @PostMapping("/message")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id"),})
-    public Result<List<UserFriendMessageVo>> message(@RequestParam("userId") Long userId) {
-        return userFriendService.listUserFriendMessageVo(userId);
+            @ApiImplicitParam(name = "userId", value = "用户id")})
+    public Result<List<UserFriendMessageVo>> message() {
+        return userFriendService.listUserFriendMessageVo();
     }
 
 }

@@ -29,7 +29,7 @@ public class UserUtils {
     public Long getUserId() {
         String token = request.getHeader("Authorization");
         if (!StringUtils.isEmpty(token)) {
-            JWTPayload jwtPayload = JWT.of(token).getPayload();
+            JWTPayload jwtPayload = JWT.of(token.substring(7)).getPayload();
             JSONObject jsonObject = jwtPayload.getClaimsJson();
             return jsonObject.getLong("userId");
         }
@@ -40,7 +40,7 @@ public class UserUtils {
     public String getUsername() {
         String token = request.getHeader("Authorization");
         if (!StringUtils.isEmpty(token)) {
-            JWTPayload jwtPayload = JWT.of(token).getPayload();
+            JWTPayload jwtPayload = JWT.of(token.substring(7)).getPayload();
             JSONObject jsonObject = jwtPayload.getClaimsJson();
             return jsonObject.getStr("userName");
         }

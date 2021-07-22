@@ -24,7 +24,7 @@ public class UserFriendServiceImplTest extends ApplicationTest {
 
     @Test
     public void listUserFriendMessageVo() {
-        Result<List<UserFriendMessageVo>> listResult = userFriendService.listUserFriendMessageVo(1349643297211699201L);
+        Result<List<UserFriendMessageVo>> listResult = userFriendService.listUserFriendMessageVo();
         System.out.println(JSONObject.toJSONString(listResult));
     }
 

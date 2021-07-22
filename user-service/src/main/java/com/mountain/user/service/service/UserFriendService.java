@@ -16,6 +16,6 @@ import java.util.List;
 public interface UserFriendService extends IService<UserFriend> {
 
 
-    Result<List<UserFriendMessageVo>> listUserFriendMessageVo(Long userId);
+    Result<List<UserFriendMessageVo>> listUserFriendMessageVo();
 
 }

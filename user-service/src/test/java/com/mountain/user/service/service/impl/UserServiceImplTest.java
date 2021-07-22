@@ -30,9 +30,9 @@ public class UserServiceImplTest extends ApplicationTest {
 
     @Test
     public void login() {
-        String username = "ke";
+        String username = "柯";
         String password = DigestUtils.md5Hex("123456");
-        Result<String> result = userService.login(username, password);
+        Result result = userService.login(username, password);
         System.out.println(JSONObject.toJSONString(result));
     }
 

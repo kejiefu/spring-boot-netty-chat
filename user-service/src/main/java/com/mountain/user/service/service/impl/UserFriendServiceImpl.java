@@ -9,6 +9,7 @@ import com.mountain.user.service.entity.UserFriend;
 import com.mountain.user.service.mapper.UserFriendMapper;
 import com.mountain.user.service.service.UserFriendService;
 import com.mountain.user.service.service.UserService;
+import com.mountain.user.service.util.UserUtils;
 import com.mountain.user.service.vo.UserFriendMessageVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -33,13 +34,16 @@ public class UserFriendServiceImpl extends ServiceImpl<UserFriendMapper, UserFri
     @Resource
     private UserService userService;
 
+    @Resource
+    UserUtils userUtils;
+
     @Override
-    public Result<List<UserFriendMessageVo>> listUserFriendMessageVo(Long userId) {
+    public Result<List<UserFriendMessageVo>> listUserFriendMessageVo() {
         Result<List<UserFriendMessageVo>> listResult = new Result<>();
         List<UserFriendMessageVo> userFriendMessageVoList = Lists.newArrayListWithCapacity(16);
         //获取好友数据
         QueryWrapper<UserFriend> userFriendQueryWrapper = new QueryWrapper<>();
-        userFriendQueryWrapper.lambda().eq(UserFriend::getUserId, userId);
+        userFriendQueryWrapper.lambda().eq(UserFriend::getUserId, userUtils.getUserId());
         userFriendQueryWrapper.lambda().eq(UserFriend::getIsDelete, 0);
         List<UserFriend> userFriendList = this.list(userFriendQueryWrapper);
         if (!CollectionUtils.isEmpty(userFriendList)) {
@@ -56,6 +60,7 @@ public class UserFriendServiceImpl extends ServiceImpl<UserFriendMapper, UserFri
                     User user = userOptional.get();
                     userFriendMessageVo.setFriendName(user.getUsername());
                     userFriendMessageVo.setHeadPortrait(user.getHeadPortrait());
+                    userFriendMessageVo.setOnlineStatus(user.getOnlineStatus());
                     userFriendMessageVoList.add(userFriendMessageVo);
                 }
             }
