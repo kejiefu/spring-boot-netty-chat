@@ -33,10 +33,10 @@ public class ConnectorServer implements ApplicationRunner {
     @Value("${connector.port}")
     private Integer port;
 
-    private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+    private static final ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("ConnectorClientServer-pool-%d").build();
 
-    private static ExecutorService executorService = new ThreadPoolExecutor(1, 1,
+    private static final ExecutorService executorService = new ThreadPoolExecutor(1, 1,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(1), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 

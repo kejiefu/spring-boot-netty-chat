@@ -2,11 +2,13 @@ package com.mountain.common.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author kejiefu
  */
 @Data
-public class ProtobufData {
+public class ProtobufData implements Serializable {
     /**
      * 类型
      */

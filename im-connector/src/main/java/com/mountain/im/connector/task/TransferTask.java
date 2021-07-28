@@ -18,7 +18,7 @@ public class TransferTask {
     /**
      * 检查transfer心跳
      */
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "0/50 * * * * ?")
     public void checkHeart() {
         log.info("---------------------------checkHeart start-----------------------------------------------");
         Iterator<TransferChannel> iter = TransferFactory.getInstance().channelsMap.values().iterator();

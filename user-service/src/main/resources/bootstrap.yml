@@ -10,9 +10,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
+        server-addr: 172.20.4.106:8849 #,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
       config:
-        server-addr: 172.20.4.106:8849,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
+        server-addr: 172.20.4.106:8849 #,172.20.4.106:8850,172.20.4.106:8851     #注册中心地址集群
         file-extension: yaml
   datasource:
     url: jdbc:mysql://localhost:3306/user?&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=true

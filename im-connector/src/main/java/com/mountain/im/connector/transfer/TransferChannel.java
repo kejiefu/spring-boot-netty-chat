@@ -71,7 +71,7 @@ public class TransferChannel {
     /**
      * 定时任务线程
      */
-    private final ScheduledExecutorService schedule = new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+    private final ScheduledExecutorService schedule = new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, namedThreadFactory, new ThreadPoolExecutor.DiscardPolicy());
 
     public TransferChannel(String host, int port) throws InterruptedException {
         this.port = port;
