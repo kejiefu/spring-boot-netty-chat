@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class Transferinitialize {
+public class TransferInitialize {
 
     @Value("${spring.cloud.nacos.discovery.server-addr}")
     private String serverAddress;
