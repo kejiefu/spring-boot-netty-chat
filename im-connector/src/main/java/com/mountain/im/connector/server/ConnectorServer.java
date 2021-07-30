@@ -1,14 +1,15 @@
 package com.mountain.im.connector.server;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mountain.im.connector.handler.client.NettyServerInitializer;
+import com.mountain.im.connector.handler.client.ClientServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,21 +64,34 @@ public class ConnectorServer implements ApplicationRunner {
             EventLoopGroup workerGroup = new NioEventLoopGroup();
             try {
                 ServerBootstrap serverBootstrap = new ServerBootstrap();
-                serverBootstrap.group(bossGroup, workerGroup)
-                        .channel(NioServerSocketChannel.class).
-                        childHandler(new NettyServerInitializer());
                 //保持连接数
                 serverBootstrap.option(ChannelOption.SO_BACKLOG, 300);
                 //保持连接
                 serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
                 //有数据立即发送
                 serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
+                serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<Channel>() {
+                    @Override
+                    protected void initChannel(Channel channel) throws Exception {
+                        //每实例一个客户端都会进来一次
+                        ChannelPipeline pipeline = channel.pipeline();
+                        // Http消息编码解码
+                        pipeline.addLast("http-codec", new HttpServerCodec());
+                        // Http消息组装
+                        pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
+                        // WebSocket通信支持
+                        pipeline.addLast("http-chunked", new ChunkedWriteHandler());
+                        //（回车换行分包） 用LineBasedFrameDecoder 来解决需要在发送的数据结尾加上回车换行符，解决粘包拆包
+                        pipeline.addLast(new LineBasedFrameDecoder(10240));
+                        // WebSocket服务端Handler
+                        pipeline.addLast("handler", new ClientServerHandler());
+                    }
+                });
                 // 链接服务器
                 ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
-
                 Channel channel = channelFuture.channel();
-                logger.info("ConnectorServer 已经启动,端口:" + port + ".");
-                //等待服务监听端口关闭,就是由于这里会将线程阻塞，导致无法发送信息，所以我这里开了线程
+                logger.info("WebSocket 已经启动,端口:" + port + ".");
+                //服务器同步连接断开时,这句代码才会往下执行
                 channel.closeFuture().sync();
             } catch (Exception ex) {
                 logger.error("ConnectorServer.run:", ex);
