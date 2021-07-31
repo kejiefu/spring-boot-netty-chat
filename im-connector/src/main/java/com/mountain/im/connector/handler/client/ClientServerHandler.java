@@ -99,9 +99,11 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
                 if (StringUtils.isNotBlank(text)) {
                     ProtobufData protobufData = JSONObject.parseObject(text, ProtobufData.class);
                     if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
-                        protobufData.setContent("pong");
-                        ctx.writeAndFlush(JSONObject.toJSONString(protobufData));
-                    } else if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())){
+                        protobufData.setTime(System.currentTimeMillis());
+                        protobufData.setContent("已收到消息");
+                        ctx.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(protobufData)));
+                    } else if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
+                        protobufData.setTime(System.currentTimeMillis());
                         protobufData.setContent("pong");
                         ctx.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(protobufData)));
                     }
