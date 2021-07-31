@@ -1,29 +1,27 @@
-package com.mountain.common.eums;
+package com.mountain.common.enums;
 
 import lombok.Getter;
 
 import java.util.Arrays;
 
 /**
- * 在线状态，0：不在线，1：在线
- *
  * @author kejiefu
  * @Description TODO
- * @Date 2021/1/14 16:56
+ * @Date 2021/1/12 11:00
  * @Created by kejiefu
  */
 @Getter
-public enum OnlineStatusEnum {
+public enum DeleteEnum {
 
     /**
-     * 不在线
+     * 未删除
      */
-    NO(0, "不在线"),
+    NO(0, "未删除"),
 
     /**
-     * 在线
+     * 已删除
      */
-    YES(1, "在线");
+    YES(1, "已删除");
 
     /**
      * code
@@ -35,12 +33,12 @@ public enum OnlineStatusEnum {
      */
     private final String name;
 
-    OnlineStatusEnum(int code, String name) {
+    DeleteEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static OnlineStatusEnum getEnum(int code) {
+    public static DeleteEnum getEnum(int code) {
         return Arrays.stream(values()).filter(x -> x.code.equals(code)).findFirst().orElse(null);
     }
 

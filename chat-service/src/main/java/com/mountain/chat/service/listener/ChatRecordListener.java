@@ -6,7 +6,7 @@ import com.mountain.chat.service.entity.ChatRecord;
 import com.mountain.chat.service.listener.core.Action;
 import com.mountain.chat.service.listener.core.MessageBody;
 import com.mountain.chat.service.service.ChatRecordService;
-import com.mountain.common.eums.MsgTypeEnum;
+import com.mountain.common.enums.MsgTypeEnum;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;

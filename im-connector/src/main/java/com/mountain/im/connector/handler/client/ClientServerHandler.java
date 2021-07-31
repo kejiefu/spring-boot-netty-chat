@@ -1,5 +1,8 @@
 package com.mountain.im.connector.handler.client;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mountain.common.domain.ProtobufData;
+import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -14,6 +17,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
@@ -87,16 +91,32 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
         if (msg instanceof FullHttpRequest) {
             // 传统的HTTP接入
             handleHttpRequest(ctx, (FullHttpRequest) msg);
-        } if (msg instanceof WebSocketFrame) {
-            ctx.writeAndFlush(new TextWebSocketFrame("发送成功"));
+        }
+        if (msg instanceof WebSocketFrame) {
+            TextWebSocketFrame textWebSocketFrame = (TextWebSocketFrame) msg;
+            String text = textWebSocketFrame.text();
+            try {
+                if (StringUtils.isNotBlank(text)) {
+                    ProtobufData protobufData = JSONObject.parseObject(text, ProtobufData.class);
+                    if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+                        protobufData.setContent("pong");
+                        ctx.writeAndFlush(JSONObject.toJSONString(protobufData));
+                    } else if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())){
+                        protobufData.setContent("pong");
+                        ctx.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(protobufData)));
+                    }
+                }
+            } catch (Exception ex) {
+                log.error("channelRead0.textWebSocketFrame:", ex);
+            }
         }
         // 如果是BaseMessageProto就是普通socket发送的协议数据
         else if (msg instanceof BaseMessageProto.BaseMessage) {
-            ctx.writeAndFlush(new TextWebSocketFrame("发送成功"));
+
         }
         // 如果是String
         else if (msg instanceof String) {
-            ctx.writeAndFlush(new TextWebSocketFrame("发送成功"));
+
         }
     }
 

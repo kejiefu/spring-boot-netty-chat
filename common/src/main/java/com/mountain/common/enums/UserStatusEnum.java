@@ -1,4 +1,4 @@
-package com.mountain.common.eums;
+package com.mountain.common.enums;
 
 import lombok.Getter;
 

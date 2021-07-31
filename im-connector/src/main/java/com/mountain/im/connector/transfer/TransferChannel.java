@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.ByteString;
 import com.mountain.common.domain.ProtobufData;
-import com.mountain.common.eums.ProtobufDataTypeEnum;
+import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.connector.actor.ITransferActor;
 import com.mountain.im.connector.actor.impl.TransferActor;
 import com.mountain.im.connector.constant.HeartBeatConstant;
@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
@@ -89,12 +90,13 @@ public class TransferChannel {
                     protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
                     protobufData.setContent("心跳");
                     protobufData.setTime(System.currentTimeMillis());
+                    protobufData.setId(UUID.randomUUID().toString());
                     String jsonString = JSONObject.toJSONString(protobufData);
                     ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
                     builder.setData(bytes);
                     BaseMessageProto.BaseMessage message = builder.build();
                     log.info("发送心跳到transfer,{}", jsonString);
-                    ChannelFuture channelFuture =  this.channel.writeAndFlush(message);
+                    ChannelFuture channelFuture = this.channel.writeAndFlush(message);
                 } catch (Exception ex) {
                     log.error("scheduleWithFixedDelay:", ex);
                 }

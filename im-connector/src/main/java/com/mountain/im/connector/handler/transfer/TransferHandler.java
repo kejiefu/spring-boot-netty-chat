@@ -2,7 +2,7 @@ package com.mountain.im.connector.handler.transfer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mountain.common.domain.ProtobufData;
-import com.mountain.common.eums.ProtobufDataTypeEnum;
+import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.connector.factory.TransferFactory;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
 import com.mountain.im.connector.transfer.TransferChannel;

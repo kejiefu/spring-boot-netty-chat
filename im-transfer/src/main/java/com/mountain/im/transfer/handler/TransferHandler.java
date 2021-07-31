@@ -3,7 +3,7 @@ package com.mountain.im.transfer.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.google.protobuf.ByteString;
 import com.mountain.common.domain.ProtobufData;
-import com.mountain.common.eums.ProtobufDataTypeEnum;
+import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.transfer.model.protobuf.BaseMessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -61,6 +61,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
             protobufData1.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
             protobufData1.setContent("我已经收到心跳信息");
             protobufData1.setTime(System.currentTimeMillis());
+            protobufData1.setId(protobufData.getId());
             String jsonString = JSONObject.toJSONString(protobufData1);
             ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
             builder.setData(bytes);
