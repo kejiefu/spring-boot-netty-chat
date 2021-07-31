@@ -8,6 +8,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
@@ -87,15 +88,15 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
             // 传统的HTTP接入
             handleHttpRequest(ctx, (FullHttpRequest) msg);
         } if (msg instanceof WebSocketFrame) {
-            ctx.writeAndFlush("连接成功");
+            ctx.writeAndFlush(new TextWebSocketFrame("发送成功"));
         }
         // 如果是BaseMessageProto就是普通socket发送的协议数据
         else if (msg instanceof BaseMessageProto.BaseMessage) {
-            ctx.writeAndFlush("连接成功");
+            ctx.writeAndFlush(new TextWebSocketFrame("发送成功"));
         }
         // 如果是String
         else if (msg instanceof String) {
-            ctx.writeAndFlush("连接成功");
+            ctx.writeAndFlush(new TextWebSocketFrame("发送成功"));
         }
     }
 
