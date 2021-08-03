@@ -13,15 +13,22 @@ import java.util.Arrays;
 @Getter
 public enum ProtobufDataTypeEnum {
 
-    /**
-     * 普通信息
-     */
-    Common_MESSAGE(1, "普通信息"),
 
     /**
      * 心跳
      */
-    HEART_BEAT(2, "心跳");
+    HEART_BEAT(1, "心跳"),
+
+    /**
+     * 单聊消息
+     */
+    Common_MESSAGE(2, "单聊消息"),
+
+    /**
+     * 群聊消息
+     */
+    GROUP_MESSAGE(3, "群聊消息");
+
 
 
     /**

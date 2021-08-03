@@ -12,6 +12,7 @@ import com.mountain.im.connector.constant.TransferConstant;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -97,10 +98,13 @@ public class TransferChannel {
                     BaseMessageProto.BaseMessage message = builder.build();
                     log.info("发送心跳到transfer,{}", jsonString);
                     ChannelFuture channelFuture = this.channel.writeAndFlush(message);
+                    channelFuture.addListener((ChannelFutureListener) future -> {
+                        log.info("心跳消息发送成功...");
+                    });
                 } catch (Exception ex) {
                     log.error("scheduleWithFixedDelay:", ex);
                 }
-            }, 1000, HeartBeatConstant.HEART_BEAT_CHECK, TimeUnit.MILLISECONDS);
+            }, 20000, HeartBeatConstant.HEART_BEAT_CHECK, TimeUnit.MILLISECONDS);
         }
     }
 

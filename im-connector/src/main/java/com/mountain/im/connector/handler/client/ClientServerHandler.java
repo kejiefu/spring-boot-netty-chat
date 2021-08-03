@@ -1,9 +1,12 @@
 package com.mountain.im.connector.handler.client;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.protobuf.ByteString;
 import com.mountain.common.domain.ProtobufData;
 import com.mountain.common.enums.ProtobufDataTypeEnum;
+import com.mountain.im.connector.factory.TransferFactory;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
+import com.mountain.im.connector.transfer.TransferChannel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -19,7 +22,7 @@ import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author kejiefu
@@ -29,10 +32,6 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
 
     private WebSocketServerHandshaker webSocketServerHandshaker;
 
-    /**
-     * 管道处理上下文，便于服务器推送数据到客户端
-     */
-    private ChannelHandlerContext ctx;
 
     /**
      * websocket第一次链接触发
@@ -99,9 +98,15 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
                 if (StringUtils.isNotBlank(text)) {
                     ProtobufData protobufData = JSONObject.parseObject(text, ProtobufData.class);
                     if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
-                        protobufData.setTime(System.currentTimeMillis());
-                        protobufData.setContent("已收到消息");
-                        ctx.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(protobufData)));
+                        boolean flag = sendTransfer();
+                        if (flag) {
+                            protobufData.setTime(System.currentTimeMillis());
+                            protobufData.setContent("true");
+                        } else {
+                            protobufData.setContent("false");
+                        }
+                        TextWebSocketFrame textWebSocketFrame1 = new TextWebSocketFrame(JSONObject.toJSONString(protobufData));
+                        ctx.writeAndFlush(textWebSocketFrame1);
                     } else if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
                         protobufData.setTime(System.currentTimeMillis());
                         protobufData.setContent("pong");
@@ -120,6 +125,41 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
         else if (msg instanceof String) {
 
         }
+    }
+
+    /**
+     * 发送消息到transfer
+     *
+     * @return
+     */
+    private boolean sendTransfer() {
+        try {
+            Map<String, TransferChannel> channelsMap = TransferFactory.getInstance().channelsMap;
+            String[] keys = channelsMap.keySet().toArray(new String[0]);
+            Random random = new Random();
+            String randomKey = keys[random.nextInt(keys.length)];
+            TransferChannel transferChannel = channelsMap.get(randomKey);
+            if (Objects.nonNull(transferChannel)) {
+                BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
+                ProtobufData protobufData = new ProtobufData();
+                protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
+                protobufData.setContent("心跳");
+                protobufData.setTime(System.currentTimeMillis());
+                protobufData.setId(UUID.randomUUID().toString());
+                String jsonString = JSONObject.toJSONString(protobufData);
+                ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
+                builder.setData(bytes);
+                BaseMessageProto.BaseMessage message = builder.build();
+                ChannelFuture channelFuture = transferChannel.getChannel().writeAndFlush(message);
+                channelFuture.addListener((ChannelFutureListener) future -> {
+                    log.info("sendTransfer发送成功...");
+                });
+                return true;
+            }
+        } catch (Exception ex) {
+            log.error("sendTransfer:", ex);
+        }
+        return false;
     }
 
 
@@ -149,10 +189,15 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
             // 将GET, POST所有请求参数转换成Map对象
             Map<String, String> paramMap = new RequestParser(request).parse();
             log.info("paramMap:{}", paramMap);
-            // 向客户端发送websocket握手,完成握手
-            webSocketServerHandshaker.handshake(ctx.channel(), request);
-            // 记录管道处理上下文，便于服务器推送数据到客户端
-            this.ctx = ctx;
+            String token = paramMap.get("token");
+            if (StringUtils.isNotBlank(token)) {
+                ClientChanel clientChanel = new ClientChanel(token, ctx, new Date());
+                boolean flag = ClientChanelServer.register(token, clientChanel);
+                if (flag) {
+                    // 向客户端发送websocket握手,完成握手
+                    webSocketServerHandshaker.handshake(ctx.channel(), request);
+                }
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 @Data
 public class ProtobufData implements Serializable {
+
     /**
      * 唯一消息id
      */
@@ -26,4 +27,6 @@ public class ProtobufData implements Serializable {
      * 时间
      */
     private Long time;
+
+
 }
