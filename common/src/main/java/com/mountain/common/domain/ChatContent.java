@@ -1,4 +1,4 @@
-package com.mountain.im.connector.model;
+package com.mountain.common.domain;
 
 import lombok.Data;
 

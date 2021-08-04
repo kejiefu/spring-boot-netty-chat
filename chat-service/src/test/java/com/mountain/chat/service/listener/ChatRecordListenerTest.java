@@ -31,7 +31,7 @@ public class ChatRecordListenerTest extends ApplicationTest {
         long id = SequenceUtils.getId();
         //消息唯一ID
         CorrelationData correlationData = new CorrelationData(id + "");
-        chatRecord.setId(id);
+        chatRecord.setId(String.valueOf(id));
         chatRecord.setMsg("我是来测试的呢");
         chatRecord.setUserId(1L);
         chatRecord.setToUserId(2L);

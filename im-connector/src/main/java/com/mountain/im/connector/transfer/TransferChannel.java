@@ -89,7 +89,7 @@ public class TransferChannel {
                     BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
                     ProtobufData protobufData = new ProtobufData();
                     protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
-                    protobufData.setContent("心跳");
+                    protobufData.setContent("ping");
                     protobufData.setTime(System.currentTimeMillis());
                     protobufData.setId(UUID.randomUUID().toString());
                     String jsonString = JSONObject.toJSONString(protobufData);

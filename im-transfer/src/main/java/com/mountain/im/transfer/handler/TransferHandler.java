@@ -1,15 +1,26 @@
 package com.mountain.im.transfer.handler;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.protobuf.ByteString;
+import com.mountain.common.domain.ChatContent;
 import com.mountain.common.domain.ProtobufData;
 import com.mountain.common.enums.ProtobufDataTypeEnum;
+import com.mountain.im.transfer.config.RabbitMqConfig;
+import com.mountain.im.transfer.model.ChatRecord;
+import com.mountain.im.transfer.model.MessageBody;
 import com.mountain.im.transfer.model.protobuf.BaseMessageProto;
+import com.mountain.im.transfer.util.SpringContextUtils;
+import com.mountain.im.transfer.util.UserUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 /**
  * @author kejiefu
@@ -55,19 +66,37 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
             String stringUtf8 = ((BaseMessageProto.BaseMessage) msg).getData().toStringUtf8();
             ProtobufData protobufData = JSONObject.parseObject(stringUtf8, ProtobufData.class);
             log.info("protobufData:{},currentTimeMillis:{}", protobufData, System.currentTimeMillis());
-            //组装发送心跳回应消息
+            RabbitTemplate rabbitTemplate = SpringContextUtils.getBean(RabbitTemplate.class);
+            UserUtils userUtils = SpringContextUtils.getBean(UserUtils.class);
             BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
-            ProtobufData protobufData1 = new ProtobufData();
-            protobufData1.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
-            protobufData1.setContent("我已经收到心跳信息");
-            protobufData1.setTime(System.currentTimeMillis());
-            protobufData1.setId(protobufData.getId());
-            String jsonString = JSONObject.toJSONString(protobufData1);
-            ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
-            builder.setData(bytes);
-            BaseMessageProto.BaseMessage message = builder.build();
-            log.info("发送心跳回应消息到connector,{}", jsonString);
-            ctx.writeAndFlush(message);
+            if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+                ProtobufData protobufData1 = new ProtobufData();
+                protobufData1.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
+                protobufData1.setContent("pong");
+                protobufData1.setTime(System.currentTimeMillis());
+                protobufData1.setId(protobufData.getId());
+                String jsonString = JSONObject.toJSONString(protobufData1);
+                ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
+                builder.setData(bytes);
+                BaseMessageProto.BaseMessage message = builder.build();
+                log.info("发送心跳回应消息到connector,{}", jsonString);
+                ctx.writeAndFlush(message);
+            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+                ChatContent chatContent = JSONObject.parseObject(protobufData.getContent(), ChatContent.class);
+                ChatRecord chatRecord = new ChatRecord();
+                CorrelationData correlationData = new CorrelationData(protobufData.getId());
+                chatRecord.setId(protobufData.getId());
+                chatRecord.setMsg(chatContent.getMessage());
+                chatRecord.setUserId(userUtils.getUserId(chatContent.getToken()));
+                chatRecord.setToUserId(Long.valueOf(chatContent.getFriendId()));
+                MessageBody messageBody = new MessageBody();
+                messageBody.setCreateTime(DateUtil.format(new Date(), DatePattern.NORM_DATETIME_FORMAT));
+                messageBody.setData(chatRecord);
+                messageBody.setMessageId(protobufData.getId());
+                rabbitTemplate.convertAndSend(RabbitMqConfig.CHAT_RECORD_QUEUE, messageBody, correlationData);
+            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.GROUP_MESSAGE.getCode())) {
+
+            }
         }
     }
 

@@ -98,7 +98,7 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
                 if (StringUtils.isNotBlank(text)) {
                     ProtobufData protobufData = JSONObject.parseObject(text, ProtobufData.class);
                     if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
-                        boolean flag = sendTransfer();
+                        boolean flag = sendTransfer(protobufData);
                         if (flag) {
                             protobufData.setTime(System.currentTimeMillis());
                             protobufData.setContent("true");
@@ -132,7 +132,7 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
      *
      * @return
      */
-    private boolean sendTransfer() {
+    private boolean sendTransfer(ProtobufData protobufData) {
         try {
             Map<String, TransferChannel> channelsMap = TransferFactory.getInstance().channelsMap;
             String[] keys = channelsMap.keySet().toArray(new String[0]);
@@ -141,11 +141,6 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
             TransferChannel transferChannel = channelsMap.get(randomKey);
             if (Objects.nonNull(transferChannel)) {
                 BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
-                ProtobufData protobufData = new ProtobufData();
-                protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
-                protobufData.setContent("心跳");
-                protobufData.setTime(System.currentTimeMillis());
-                protobufData.setId(UUID.randomUUID().toString());
                 String jsonString = JSONObject.toJSONString(protobufData);
                 ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
                 builder.setData(bytes);

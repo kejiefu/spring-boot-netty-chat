@@ -25,7 +25,7 @@ public class ChatRecordServiceImplTest extends ApplicationTest {
     public void testSave() {
         for (long i = 1; i <= 20; i++) {
             ChatRecord chatRecord = new ChatRecord();
-            chatRecord.setId(SequenceUtils.getId());
+            chatRecord.setId(String.valueOf(SequenceUtils.getId()));
             chatRecord.setMsg(String.valueOf(System.currentTimeMillis()));
             chatRecord.setUserId(i);
             chatRecord.setToUserId(2L);

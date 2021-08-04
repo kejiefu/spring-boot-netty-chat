@@ -13,7 +13,7 @@ public class ChatRecord {
     /**
      * 主键
      */
-    private Long id;
+    private String id;
     /**
      * 用户id
      */

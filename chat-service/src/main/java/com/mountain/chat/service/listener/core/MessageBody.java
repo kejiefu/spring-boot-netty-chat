@@ -1,6 +1,6 @@
 package com.mountain.chat.service.listener.core;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -32,14 +32,14 @@ public class MessageBody implements Serializable {
     }
 
     public <T> T getData(Class<T> type) {
-        return JSON.parseObject(this.getData().toString(), type);
+        return JSONObject.parseObject(this.getData().toString(), type);
     }
 
     public static MessageBody getMessageBody(Message message) {
         MessageBody messageBody = null;
         try {
             String s = new String(message.getBody(), "utf-8");
-            messageBody = JSON.parseObject(s, MessageBody.class);
+            messageBody = JSONObject.parseObject(s, MessageBody.class);
         } catch (Exception e) {
             log.info(e.getMessage());
         }
