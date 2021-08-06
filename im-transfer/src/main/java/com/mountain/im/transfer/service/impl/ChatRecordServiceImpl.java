@@ -28,14 +28,14 @@ public class ChatRecordServiceImpl implements ChatRecordService {
 
     @Override
     public void sendChatRecord(ChatRecord chatRecordDto) {
-        long id = SequenceUtils.getId();
+        String id = String.valueOf(SequenceUtils.getId());
         //消息唯一ID
-        CorrelationData correlationData = new CorrelationData(id + "");
+        CorrelationData correlationData = new CorrelationData(id);
         chatRecordDto.setId(id);
         MessageBody messageBodyDto = new MessageBody();
         messageBodyDto.setCreateTime(DateUtil.format(new Date(), DatePattern.NORM_DATETIME_FORMAT));
         messageBodyDto.setData(chatRecordDto);
-        messageBodyDto.setMessageId(String.valueOf(id));
+        messageBodyDto.setMessageId(id);
         rabbitTemplate.convertAndSend(RabbitMqConfig.CHAT_RECORD_QUEUE, messageBodyDto, correlationData);
     }
 
