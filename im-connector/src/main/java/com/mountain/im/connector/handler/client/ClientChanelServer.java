@@ -1,9 +1,10 @@
 package com.mountain.im.connector.handler.client;
 
-import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -15,29 +16,33 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ClientChanelServer {
 
-    public static final Map<String, ClientChanel> clientChanelServerMap = new ConcurrentHashMap<>();
+    public static final Map<Long, ClientChanel> clientChanelServerMap = new ConcurrentHashMap<>();
 
     private ClientChanelServer() {
 
     }
 
-    public static boolean register(String token, ClientChanel clientChanel) {
-        if (Strings.isNullOrEmpty(token) || clientChanelServerMap.containsKey(token)) {
+    public static boolean register(Long userId, ClientChanel clientChanel) {
+        if (Objects.nonNull(userId) || clientChanelServerMap.containsKey(userId)) {
             return false;
         }
-        clientChanelServerMap.put(token, clientChanel);
+        clientChanelServerMap.put(userId, clientChanel);
         return true;
     }
 
-    public static boolean logout(String token) {
-        if (Strings.isNullOrEmpty(token) || !clientChanelServerMap.containsKey(token)) {
+    public static boolean logout(Long userId) {
+        if (Objects.nonNull(userId) || !clientChanelServerMap.containsKey(userId)) {
             return false;
         }
-        clientChanelServerMap.remove(token);
+        clientChanelServerMap.remove(userId);
         return true;
     }
 
-
+    public static boolean updateDate(Long userId) {
+        ClientChanel clientChanel = clientChanelServerMap.get(userId);
+        clientChanel.setDate(new Date());
+        return true;
+    }
 
 
 }

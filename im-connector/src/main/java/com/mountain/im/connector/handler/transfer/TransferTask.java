@@ -1,4 +1,4 @@
-package com.mountain.im.connector.task;
+package com.mountain.im.connector.handler.transfer;
 
 import com.mountain.im.connector.factory.TransferFactory;
 import com.mountain.im.connector.transfer.TransferChannel;

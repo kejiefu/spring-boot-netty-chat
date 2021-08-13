@@ -7,6 +7,8 @@ import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.connector.factory.TransferFactory;
 import com.mountain.im.connector.model.protobuf.BaseMessageProto;
 import com.mountain.im.connector.transfer.TransferChannel;
+import com.mountain.im.connector.util.SpringContextUtils;
+import com.mountain.im.connector.util.UserUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -108,6 +110,10 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
                         TextWebSocketFrame textWebSocketFrame1 = new TextWebSocketFrame(JSONObject.toJSONString(protobufData));
                         ctx.writeAndFlush(textWebSocketFrame1);
                     } else if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
+                        JSONObject jsonObject = JSONObject.parseObject(protobufData.getContent());
+                        String token = jsonObject.getString("token");
+                        UserUtils userUtils = SpringContextUtils.getBean(UserUtils.class);
+                        ClientChanelServer.updateDate(userUtils.getUserId(token));
                         protobufData.setTime(System.currentTimeMillis());
                         protobufData.setContent("pong");
                         ctx.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(protobufData)));
@@ -183,11 +189,12 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
         } else {
             // 将GET, POST所有请求参数转换成Map对象
             Map<String, String> paramMap = new RequestParser(request).parse();
-            log.info("paramMap:{}", paramMap);
+            log.info("handleHttpRequest.paramMap:{}", paramMap);
             String token = paramMap.get("token");
             if (StringUtils.isNotBlank(token)) {
-                ClientChanel clientChanel = new ClientChanel(token, ctx, new Date());
-                boolean flag = ClientChanelServer.register(token, clientChanel);
+                UserUtils userUtils = SpringContextUtils.getBean(UserUtils.class);
+                ClientChanel clientChanel = new ClientChanel(userUtils.getUserId(token), ctx, new Date());
+                boolean flag = ClientChanelServer.register(userUtils.getUserId(token), clientChanel);
                 if (flag) {
                     // 向客户端发送websocket握手,完成握手
                     webSocketServerHandshaker.handshake(ctx.channel(), request);
