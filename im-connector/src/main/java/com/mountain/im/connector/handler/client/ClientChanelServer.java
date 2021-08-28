@@ -22,26 +22,31 @@ public class ClientChanelServer {
 
     }
 
+    /**
+     * 将其存在的channel remove掉，换成新的，每个用户志允许存在一个登录
+     *
+     * @param userId
+     * @param clientChanel
+     * @return
+     */
     public static boolean register(Long userId, ClientChanel clientChanel) {
         if (Objects.nonNull(userId) || clientChanelServerMap.containsKey(userId)) {
-            return false;
+            clientChanelServerMap.remove(userId);
         }
         clientChanelServerMap.put(userId, clientChanel);
         return true;
     }
 
-    public static boolean logout(Long userId) {
+    public static void logout(Long userId) {
         if (Objects.nonNull(userId) || !clientChanelServerMap.containsKey(userId)) {
-            return false;
+            return;
         }
         clientChanelServerMap.remove(userId);
-        return true;
     }
 
-    public static boolean updateDate(Long userId) {
+    public static void updateDate(Long userId) {
         ClientChanel clientChanel = clientChanelServerMap.get(userId);
         clientChanel.setDate(new Date());
-        return true;
     }
 
 

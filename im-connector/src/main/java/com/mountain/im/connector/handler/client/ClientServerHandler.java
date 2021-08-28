@@ -134,12 +134,14 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     /**
+     * 这里的传输可以用mq进行解耦
      * 发送消息到transfer
      *
      * @return
      */
     private boolean sendTransfer(ProtobufData protobufData) {
         try {
+            //随机取一个机器
             Map<String, TransferChannel> channelsMap = TransferFactory.getInstance().channelsMap;
             String[] keys = channelsMap.keySet().toArray(new String[0]);
             Random random = new Random();

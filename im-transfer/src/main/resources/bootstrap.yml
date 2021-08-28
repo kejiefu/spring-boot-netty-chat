@@ -17,7 +17,7 @@ spring:
   #这些配置应该放到nacos config
   rabbitmq:
     virtual-host: /
-    addresses: 120.24.28.171:5672           # RabbitMQ集群，addresses一定要逗号分隔   120.24.28.171:5672,120.24.28.171:5672
+    addresses: 121.14.41.140:5672           # RabbitMQ集群，addresses一定要逗号分隔   120.24.28.171:5672,120.24.28.171:5672
     username: admin
     password: 123456
     listener:
@@ -30,11 +30,10 @@ spring:
           enabled: true
   redis:
     database: 0
-    host: 120.24.28.171:5672
+    host: 172.20.4.106
     port: 6379
-    password: 123456
-    timeout: 5s
-    timeoutMillisecond: 30000
+    password: R9ET5@SP457RT2MD7
+    timeout: 2s
 transfer:
   port: 8083
   name: transfer-server
