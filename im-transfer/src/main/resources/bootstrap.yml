@@ -18,8 +18,8 @@ spring:
   rabbitmq:
     virtual-host: /
     addresses: 120.24.28.171:5672           # RabbitMQ集群，addresses一定要逗号分隔   120.24.28.171:5672,120.24.28.171:5672
-    username: guest
-    password: guest
+    username: admin
+    password: 123456
     listener:
       direct:
         retry:
@@ -28,6 +28,13 @@ spring:
         acknowledge-mode: manual
         retry:
           enabled: true
+  redis:
+    database: 0
+    host: 120.24.28.171:5672
+    port: 6379
+    password: 123456
+    timeout: 5s
+    timeoutMillisecond: 30000
 transfer:
   port: 8083
   name: transfer-server
