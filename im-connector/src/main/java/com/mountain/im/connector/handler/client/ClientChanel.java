@@ -39,4 +39,12 @@ public class ClientChanel {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public ChannelHandlerContext getCtx() {
+        return ctx;
+    }
+
+    public void setCtx(ChannelHandlerContext ctx) {
+        this.ctx = ctx;
+    }
 }

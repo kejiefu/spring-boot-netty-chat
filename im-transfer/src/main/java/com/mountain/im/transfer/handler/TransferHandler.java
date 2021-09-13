@@ -69,7 +69,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
             RabbitTemplate rabbitTemplate = SpringContextUtils.getBean(RabbitTemplate.class);
             UserUtils userUtils = SpringContextUtils.getBean(UserUtils.class);
             BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
-            if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+            if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
                 ProtobufData protobufData1 = new ProtobufData();
                 protobufData1.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
                 protobufData1.setContent("pong");
