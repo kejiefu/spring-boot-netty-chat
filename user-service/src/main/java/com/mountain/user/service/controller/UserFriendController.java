@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Api(value = "userFriend", tags = "userFriend")
 @RestController
-@RequestMapping("/user-friend")
+@RequestMapping("/user/friend")
 public class UserFriendController {
 
     /**
