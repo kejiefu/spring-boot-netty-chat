@@ -4,7 +4,9 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.protobuf.ByteString;
+import com.mountain.common.constant.RedisConstant;
 import com.mountain.common.domain.ChatContent;
+import com.mountain.common.domain.HeartBeat;
 import com.mountain.common.domain.ProtobufData;
 import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.transfer.config.RabbitMqConfig;
@@ -18,6 +20,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -28,12 +31,17 @@ import java.util.Date;
 @Slf4j
 public class TransferHandler extends SimpleChannelInboundHandler<Object> {
 
+    private String address;
+
+    private ChannelHandlerContext ctx;
+
     /**
      * 这条连接上添加的所有的业务逻辑处理器都被移除掉后调用
      */
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
         log.info("handlerRemoved...{}", ctx);
+        TransferServerManager.logout(address);
     }
 
     /**
@@ -44,6 +52,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("exceptionCaught...", cause);
         ctx.close();
+        TransferServerManager.logout(address);
     }
 
     /**
@@ -54,6 +63,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         log.error("channelInactive...");
+        TransferServerManager.logout(address);
     }
 
     /**
@@ -70,6 +80,8 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
             UserUtils userUtils = SpringContextUtils.getBean(UserUtils.class);
             BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
             if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
+                HeartBeat heartBeat = JSONObject.parseObject(protobufData.getContent(), HeartBeat.class);
+                //发送心跳回应消息
                 ProtobufData protobufData1 = new ProtobufData();
                 protobufData1.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
                 protobufData1.setContent("pong");
@@ -81,7 +93,12 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
                 BaseMessageProto.BaseMessage message = builder.build();
                 log.info("发送心跳回应消息到connector,{}", jsonString);
                 ctx.writeAndFlush(message);
+                //存储关系
+                this.address = heartBeat.getAddress();
+                this.ctx = ctx;
+                TransferServerManager.register(heartBeat.getAddress(), ctx);
             } else if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+                //存储消息
                 ChatContent chatContent = JSONObject.parseObject(protobufData.getContent(), ChatContent.class);
                 ChatRecord chatRecord = new ChatRecord();
                 CorrelationData correlationData = new CorrelationData(protobufData.getId());
@@ -94,10 +111,24 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
                 messageBody.setData(chatRecord);
                 messageBody.setMessageId(protobufData.getId());
                 rabbitTemplate.convertAndSend(RabbitMqConfig.CHAT_RECORD_QUEUE, messageBody, correlationData);
+                //转发消息给具体用户
+                sendUserMessage(chatRecord);
             } else if (protobufData.getType().equals(ProtobufDataTypeEnum.GROUP_MESSAGE.getCode())) {
 
             }
         }
+    }
+
+
+    /**
+     * 转发消息给具体用户
+     */
+    private void sendUserMessage(ChatRecord chatRecord) {
+        StringRedisTemplate stringRedisTemplate = SpringContextUtils.getBean(StringRedisTemplate.class);
+        String redisKey = RedisConstant.USER_SERVER + chatRecord.getUserId().toString();
+        //ip地址
+        String redisValue = stringRedisTemplate.opsForValue().get(redisKey);
+
     }
 
 }

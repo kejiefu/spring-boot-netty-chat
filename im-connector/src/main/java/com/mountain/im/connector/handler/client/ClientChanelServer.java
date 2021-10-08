@@ -1,11 +1,9 @@
 package com.mountain.im.connector.handler.client;
 
-import com.mountain.im.connector.constant.RedisConstant;
+import com.mountain.common.constant.RedisConstant;
 import com.mountain.im.connector.util.Netty4Utils;
 import com.mountain.im.connector.util.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.Date;
@@ -22,9 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class ClientChanelServer {
-
-    @Autowired
-    private RedissonClient redissonClient;
 
     public static final Map<Long, ClientChanel> clientChanelServerMap = new ConcurrentHashMap<>();
 
@@ -50,6 +45,7 @@ public class ClientChanelServer {
         //当前的机器
         String redisValue = Netty4Utils.getIp(clientChanel.getCtx());
         Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent(redisKey, redisValue, 60 * 10000, TimeUnit.SECONDS);
+        log.info("ClientChanelServer.register,redisKey:{},redisValue:{}", redisKey, redisValue);
         return true;
     }
 

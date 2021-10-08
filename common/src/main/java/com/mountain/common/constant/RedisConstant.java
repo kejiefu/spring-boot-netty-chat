@@ -1,4 +1,4 @@
-package com.mountain.im.connector.constant;
+package com.mountain.common.constant;
 
 /**
  * @author kejiefu

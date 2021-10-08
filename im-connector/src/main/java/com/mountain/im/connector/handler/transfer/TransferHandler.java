@@ -28,10 +28,12 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
         if (msg instanceof BaseMessageProto.BaseMessage) {
             String stringUtf8 = ((BaseMessageProto.BaseMessage) msg).getData().toStringUtf8();
             ProtobufData protobufData = JSONObject.parseObject(stringUtf8, ProtobufData.class);
+            log.info("收到消息,protobufData:{},currentTimeMillis:{}", protobufData, System.currentTimeMillis());
             if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
-                log.info("收到心跳回应消息,protobufData:{},currentTimeMillis:{}", protobufData, System.currentTimeMillis());
                 TransferChannel transferChannel = TransferFactory.getInstance().getChannel(ctx.channel());
                 transferChannel.setHeartConnectTime(System.currentTimeMillis());
+            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+                 //用户id获取channel
             }
         }
     }

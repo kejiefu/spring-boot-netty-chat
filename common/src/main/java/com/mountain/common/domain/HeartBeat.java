@@ -4,6 +4,7 @@ import lombok.Data;
 
 /**
  * 心跳消息
+ *
  * @author kejiefu
  * @Description TODO
  * @Date 2021/1/21 19:51
@@ -18,8 +19,9 @@ public class HeartBeat {
     private String content;
 
     /**
-     * 时间
+     * 地址信息
      */
-    private Long time;
+    private String address;
+
 
 }
