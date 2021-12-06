@@ -43,9 +43,9 @@ public class ClientChanelServer {
         StringRedisTemplate stringRedisTemplate = SpringContextUtils.getBean(StringRedisTemplate.class);
         String redisKey = RedisConstant.USER_SERVER + userId.toString();
         //当前的机器
-        String redisValue = Netty4Utils.getIp(clientChanel.getCtx());
-        Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent(redisKey, redisValue, 60 * 10000, TimeUnit.SECONDS);
-        log.info("ClientChanelServer.register,redisKey:{},redisValue:{}", redisKey, redisValue);
+        String redisValue = Netty4Utils.getIp();
+        Boolean aBoolean = stringRedisTemplate.opsForValue().setIfPresent(redisKey, redisValue, 60 * 10000, TimeUnit.SECONDS);
+        log.info("ClientChanelServer.register,redisKey:{},redisValue:{},aBoolean:{}", redisKey, redisValue, aBoolean);
         return true;
     }
 

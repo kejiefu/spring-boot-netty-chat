@@ -23,6 +23,7 @@ public class TransferServerManager {
             return false;
         }
         channelHandlerContextMap.put(address, ctx);
+        log.info("TransferServerManager.channelHandlerContextMap.register:{}", address);
         return true;
     }
 
@@ -31,6 +32,7 @@ public class TransferServerManager {
             return false;
         }
         channelHandlerContextMap.remove(address);
+        log.info("TransferServerManager.channelHandlerContextMap.logout:{}", address);
         return true;
     }
 

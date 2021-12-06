@@ -22,7 +22,7 @@ public enum ProtobufDataTypeEnum {
     /**
      * 单聊消息
      */
-    Common_MESSAGE(2, "单聊消息"),
+    COMMON_MESSAGE(2, "单聊消息"),
 
     /**
      * 群聊消息

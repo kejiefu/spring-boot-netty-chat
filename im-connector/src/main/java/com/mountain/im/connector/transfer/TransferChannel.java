@@ -92,7 +92,7 @@ public class TransferChannel {
                     ProtobufData protobufData = new ProtobufData();
                     protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
                     HeartBeat heartBeat = new HeartBeat();
-                    heartBeat.setAddress(Netty4Utils.getIp(this.channel));
+                    heartBeat.setAddress(Netty4Utils.getIp());
                     heartBeat.setContent("ping");
                     protobufData.setContent(JSONObject.toJSONString(heartBeat));
                     protobufData.setTime(System.currentTimeMillis());

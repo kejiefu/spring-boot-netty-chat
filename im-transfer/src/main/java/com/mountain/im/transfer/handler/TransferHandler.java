@@ -24,6 +24,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author kejiefu
@@ -97,7 +98,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
                 this.address = heartBeat.getAddress();
                 this.ctx = ctx;
                 TransferServerManager.register(heartBeat.getAddress(), ctx);
-            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.COMMON_MESSAGE.getCode())) {
                 //存储消息
                 ChatContent chatContent = JSONObject.parseObject(protobufData.getContent(), ChatContent.class);
                 ChatRecord chatRecord = new ChatRecord();
@@ -123,12 +124,26 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
     /**
      * 转发消息给具体用户
      */
-    private void sendUserMessage(ChatRecord chatRecord) {
+    private void sendUserMessage(ChatRecord chatRecord) throws UnsupportedEncodingException {
         StringRedisTemplate stringRedisTemplate = SpringContextUtils.getBean(StringRedisTemplate.class);
-        String redisKey = RedisConstant.USER_SERVER + chatRecord.getUserId().toString();
+        String redisKey = RedisConstant.USER_SERVER + chatRecord.getToUserId().toString();
         //ip地址
         String redisValue = stringRedisTemplate.opsForValue().get(redisKey);
-
+        ChannelHandlerContext channelHandlerContext = TransferServerManager.channelHandlerContextMap.get(redisValue);
+        if(Objects.nonNull(channelHandlerContext)){
+            BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
+            ProtobufData protobufData = new ProtobufData();
+            protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
+            protobufData.setContent(chatRecord.getMsg());
+            protobufData.setTime(System.currentTimeMillis());
+            protobufData.setId(protobufData.getId());
+            String jsonString = JSONObject.toJSONString(protobufData);
+            ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
+            builder.setData(bytes);
+            BaseMessageProto.BaseMessage message = builder.build();
+            log.info("转发消息给具体用户,{}", jsonString);
+            channelHandlerContext.writeAndFlush(message);
+        }
     }
 
 }

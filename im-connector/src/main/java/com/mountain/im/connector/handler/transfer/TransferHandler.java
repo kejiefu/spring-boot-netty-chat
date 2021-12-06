@@ -32,7 +32,7 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
             if (protobufData.getType().equals(ProtobufDataTypeEnum.HEART_BEAT.getCode())) {
                 TransferChannel transferChannel = TransferFactory.getInstance().getChannel(ctx.channel());
                 transferChannel.setHeartConnectTime(System.currentTimeMillis());
-            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+            } else if (protobufData.getType().equals(ProtobufDataTypeEnum.COMMON_MESSAGE.getCode())) {
                  //用户id获取channel
             }
         }
