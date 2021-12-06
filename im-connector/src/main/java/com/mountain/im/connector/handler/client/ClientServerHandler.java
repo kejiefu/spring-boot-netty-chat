@@ -99,7 +99,7 @@ public class ClientServerHandler extends SimpleChannelInboundHandler<Object> {
             try {
                 if (StringUtils.isNotBlank(text)) {
                     ProtobufData protobufData = JSONObject.parseObject(text, ProtobufData.class);
-                    if (protobufData.getType().equals(ProtobufDataTypeEnum.Common_MESSAGE.getCode())) {
+                    if (protobufData.getType().equals(ProtobufDataTypeEnum.COMMON_MESSAGE.getCode())) {
                         boolean flag = sendTransfer(protobufData);
                         if (flag) {
                             protobufData.setTime(System.currentTimeMillis());

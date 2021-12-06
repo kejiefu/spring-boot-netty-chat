@@ -2,8 +2,8 @@ package com.mountain.im.transfer.service.impl;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import com.mountain.common.domain.ChatRecord;
 import com.mountain.im.transfer.config.RabbitMqConfig;
-import com.mountain.im.transfer.model.ChatRecord;
 import com.mountain.im.transfer.model.MessageBody;
 import com.mountain.im.transfer.service.ChatRecordService;
 import com.mountain.im.transfer.util.SequenceUtils;

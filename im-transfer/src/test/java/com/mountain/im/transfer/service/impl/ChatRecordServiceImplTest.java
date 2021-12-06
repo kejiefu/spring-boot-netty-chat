@@ -1,7 +1,7 @@
 package com.mountain.im.transfer.service.impl;
 
+import com.mountain.common.domain.ChatRecord;
 import com.mountain.im.transfer.ApplicationTest;
-import com.mountain.im.transfer.model.ChatRecord;
 import com.mountain.im.transfer.service.ChatRecordService;
 import org.junit.Test;
 

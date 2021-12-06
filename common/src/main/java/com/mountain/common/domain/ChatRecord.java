@@ -1,6 +1,8 @@
-package com.mountain.im.transfer.model;
+package com.mountain.common.domain;
 
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 聊天记录
@@ -8,7 +10,7 @@ import lombok.Data;
  * @author kejiefu
  */
 @Data
-public class ChatRecord {
+public class ChatRecord implements Serializable {
 
     /**
      * 主键

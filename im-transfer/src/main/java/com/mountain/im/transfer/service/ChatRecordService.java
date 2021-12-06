@@ -1,6 +1,6 @@
 package com.mountain.im.transfer.service;
 
-import com.mountain.im.transfer.model.ChatRecord;
+import com.mountain.common.domain.ChatRecord;
 
 /**
  * @author kejiefu

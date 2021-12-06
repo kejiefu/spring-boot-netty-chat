@@ -6,11 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.protobuf.ByteString;
 import com.mountain.common.constant.RedisConstant;
 import com.mountain.common.domain.ChatContent;
+import com.mountain.common.domain.ChatRecord;
 import com.mountain.common.domain.HeartBeat;
 import com.mountain.common.domain.ProtobufData;
 import com.mountain.common.enums.ProtobufDataTypeEnum;
 import com.mountain.im.transfer.config.RabbitMqConfig;
-import com.mountain.im.transfer.model.ChatRecord;
 import com.mountain.im.transfer.model.MessageBody;
 import com.mountain.im.transfer.model.protobuf.BaseMessageProto;
 import com.mountain.im.transfer.util.SpringContextUtils;
@@ -133,10 +133,10 @@ public class TransferHandler extends SimpleChannelInboundHandler<Object> {
         if(Objects.nonNull(channelHandlerContext)){
             BaseMessageProto.BaseMessage.Builder builder = BaseMessageProto.BaseMessage.newBuilder();
             ProtobufData protobufData = new ProtobufData();
-            protobufData.setType(ProtobufDataTypeEnum.HEART_BEAT.getCode());
-            protobufData.setContent(chatRecord.getMsg());
+            protobufData.setType(ProtobufDataTypeEnum.COMMON_MESSAGE.getCode());
+            protobufData.setContent(JSONObject.toJSONString(chatRecord));
             protobufData.setTime(System.currentTimeMillis());
-            protobufData.setId(protobufData.getId());
+            protobufData.setId(chatRecord.getId());
             String jsonString = JSONObject.toJSONString(protobufData);
             ByteString bytes = ByteString.copyFrom(jsonString, "UTF-8");
             builder.setData(bytes);
